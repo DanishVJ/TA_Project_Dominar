@@ -5,13 +5,12 @@ public class Simple3rdPersonController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 8f;         
-    public float rotationSpeed = 10f; 
+    public float rotationSpeed = 100f; // Adjusted for snappy keyboard steering
     public float gravity = -9.81f;
 
     private CharacterController controller;
     private Vector3 velocity;
     private PlayerControls controls;
-    private Transform mainCameraTransform;
 
     void Awake()
     {
@@ -24,12 +23,6 @@ public class Simple3rdPersonController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        
-        // Find the actual camera lens in the world
-        if (Camera.main != null)
-        {
-            mainCameraTransform = Camera.main.transform;
-        }
     }
 
     void Update()
@@ -43,35 +36,25 @@ public class Simple3rdPersonController : MonoBehaviour
         // 2. Read WASD Input
         Vector2 moveInput = controls.Player.Move.ReadValue<Vector2>();
         
-        // Create a clean input direction vector based purely on keys pressed
-        Vector3 inputDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
-
-        // 3. Move relative to the world-facing direction of the camera lens
-        if (inputDirection.magnitude >= 0.1f && mainCameraTransform != null)
+        // --- KEYBOARD STEERING (A and D keys only) ---
+        // A and D rotate the player's body directly left and right
+        if (Mathf.Abs(moveInput.x) > 0.1f)
         {
-            // Get the camera's current horizontal directions in the world
-            Vector3 forward = mainCameraTransform.forward;
-            Vector3 right = mainCameraTransform.right;
-            
-            // Flatten them completely so the player stays on the ground plane
-            forward.y = 0f;
-            right.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-
-            // Calculate the EXACT direction the player wants to go relative to the screen
-            Vector3 moveDirection = (forward * inputDirection.z) + (right * inputDirection.x);
-            moveDirection.Normalize();
-
-            // Move the player capsule straight along that line
-            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-            // Smoothly rotate the player's visual model to face the direction they are walking
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            float turnAmount = moveInput.x * rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.up * turnAmount);
         }
 
-        // 4. Apply Gravity
+        // --- FORWARD/BACKWARD MOVEMENT (W and S keys) ---
+        // Calculate movement relative to the player's current forward facing direction
+        Vector3 moveDirection = transform.forward * moveInput.y;
+
+        // Move the player capsule
+        if (moveDirection.magnitude >= 0.1f)
+        {
+            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+        }
+
+        // 3. Apply Gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
