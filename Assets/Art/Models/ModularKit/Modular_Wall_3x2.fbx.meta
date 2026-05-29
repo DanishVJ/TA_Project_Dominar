@@ -10,7 +10,7 @@ ModelImporter:
       name: standardSurface1
     second: {fileID: 2100000, guid: 7949147bbb9fc9948a0c45c0f63ea561, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
