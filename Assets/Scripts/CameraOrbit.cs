@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class CameraOrbit : MonoBehaviour
 {
-    public float mouseSensitivity = 15f; 
+    
+    [Header("Camera Settings")]
+    [SerializeField] private float mouseSensitivity = 1f;
+
     private float xRotation = 0f;
     private float yRotation = 0f; // Tracking look rotation separately from player body
     private PlayerControls controls;
@@ -29,8 +32,8 @@ public class CameraOrbit : MonoBehaviour
         // Read mouse/stick looking input
         Vector2 lookInput = controls.Player.Look.ReadValue<Vector2>();
 
-        float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
-        float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
+        float mouseX = lookInput.x * mouseSensitivity;
+        float mouseY = lookInput.y * mouseSensitivity;
 
         // Accumulate mouse X (looking around horizontally)
         yRotation += mouseX;
