@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modular_Edge_Horizontal
       objectReference: {fileID: 0}
+    - target: {fileID: 3148636407091773999, guid: 1b3b3db4e7794b541af8fe5ff1779822, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 17b101120f7cbb4448180c2bbec11309, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

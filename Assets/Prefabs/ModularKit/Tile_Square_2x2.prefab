@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3799016071208419953, guid: d8f5974587f7a3a418ebe69dca0e5996, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 17b101120f7cbb4448180c2bbec11309, type: 2}
     - target: {fileID: 919132149155446097, guid: d8f5974587f7a3a418ebe69dca0e5996, type: 3}
       propertyPath: m_Name
       value: Modular_SquareTile

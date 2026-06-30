@@ -128,6 +128,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2115581443117398213, guid: 888d13f25f607e44b96e5d9a0d19030e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc70b5cba52ec1d45858eba4a2be1484, type: 2}
     - target: {fileID: -1248888910959477828, guid: 888d13f25f607e44b96e5d9a0d19030e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -148,6 +152,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 438108997354422017, guid: 888d13f25f607e44b96e5d9a0d19030e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc70b5cba52ec1d45858eba4a2be1484, type: 2}
     - target: {fileID: 919132149155446097, guid: 888d13f25f607e44b96e5d9a0d19030e, type: 3}
       propertyPath: m_Name
       value: Mesh
@@ -168,6 +176,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6233868370151976773, guid: 888d13f25f607e44b96e5d9a0d19030e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 28f4eab8857e7014c8b11ea6df48b45f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

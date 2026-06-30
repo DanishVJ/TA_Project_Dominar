@@ -213,6 +213,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modular_UpperFloorTile_Radial
       objectReference: {fileID: 0}
+    - target: {fileID: 8367050350258135684, guid: cc721af49083ffa46aebc7f6d9260ad7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9383b1239e903d04f8ca478a3ecf3ba8, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -8840285707417299687, guid: cc721af49083ffa46aebc7f6d9260ad7, type: 3}
@@ -302,6 +306,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6839202895285270211, guid: cc721af49083ffa46aebc7f6d9260ad7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 17b101120f7cbb4448180c2bbec11309, type: 2}
     - target: {fileID: 919132149155446097, guid: cc721af49083ffa46aebc7f6d9260ad7, type: 3}
       propertyPath: m_Name
       value: Modular_UpperFloorTile_Radial

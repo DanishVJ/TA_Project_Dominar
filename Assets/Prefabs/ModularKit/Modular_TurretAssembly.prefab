@@ -48,10 +48,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6770393382278894573, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
+    - target: {fileID: -5805105919637519799, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
+    - target: {fileID: -3009688186551299752, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
+    - target: {fileID: -2732091682272038371, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
     - target: {fileID: 919132149155446097, guid: 6f21ca748ac31884995808af07d89197, type: 3}
       propertyPath: m_Name
       value: Modular_TurretAssembly
       objectReference: {fileID: 0}
+    - target: {fileID: 2339991104606300955, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
+    - target: {fileID: 2440370018728595586, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
+    - target: {fileID: 5773149449347329209, guid: 6f21ca748ac31884995808af07d89197, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1da33581e3d1364581cda4aaa672841, type: 2}
     - target: {fileID: 8666502054476785332, guid: 6f21ca748ac31884995808af07d89197, type: 3}
       propertyPath: m_Name
       value: Mesh

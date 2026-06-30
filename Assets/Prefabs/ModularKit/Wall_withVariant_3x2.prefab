@@ -209,6 +209,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -291387801754801401, guid: 4884bc93169f71e45bf823da654460b1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1052b52ce36a5a9408cd354454833e25, type: 2}
     - target: {fileID: 919132149155446097, guid: 4884bc93169f71e45bf823da654460b1, type: 3}
       propertyPath: m_Name
       value: Modular_Wall_withWindow_3x2
@@ -305,6 +309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modular_Wall_withoutWindow_3x2
       objectReference: {fileID: 0}
+    - target: {fileID: 4761105401764860196, guid: e5761f93767ae8b49b92a869bb741f15, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1052b52ce36a5a9408cd354454833e25, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
