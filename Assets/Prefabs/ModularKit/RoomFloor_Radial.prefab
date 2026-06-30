@@ -132,10 +132,18 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -361496572488733739, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9383b1239e903d04f8ca478a3ecf3ba8, type: 2}
     - target: {fileID: 919132149155446097, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: m_Name
       value: Modular_RadialRoomFloorSegment
       objectReference: {fileID: 0}
+    - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 17b101120f7cbb4448180c2bbec11309, type: 2}
     - target: {fileID: 8480628939281349302, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

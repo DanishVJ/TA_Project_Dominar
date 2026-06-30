@@ -229,6 +229,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4597640001393829432, guid: 2677972ab5db68949a138278053a7dc1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc70b5cba52ec1d45858eba4a2be1484, type: 2}
     - target: {fileID: -1369766194069179918, guid: 2677972ab5db68949a138278053a7dc1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -253,6 +257,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modular_DomePanel_withoutDoorway
       objectReference: {fileID: 0}
+    - target: {fileID: 5214537709093653771, guid: 2677972ab5db68949a138278053a7dc1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 28f4eab8857e7014c8b11ea6df48b45f, type: 2}
+    - target: {fileID: 6840742213589133161, guid: 2677972ab5db68949a138278053a7dc1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc70b5cba52ec1d45858eba4a2be1484, type: 2}
     - target: {fileID: 6846257493511356595, guid: 2677972ab5db68949a138278053a7dc1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -461,6 +473,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4096170648777582453, guid: dd9eec4926d581249b24fc12e82b7cbd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc70b5cba52ec1d45858eba4a2be1484, type: 2}
+    - target: {fileID: -653381314564709231, guid: dd9eec4926d581249b24fc12e82b7cbd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fc70b5cba52ec1d45858eba4a2be1484, type: 2}
     - target: {fileID: -251813912403970084, guid: dd9eec4926d581249b24fc12e82b7cbd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -485,6 +505,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modular_DomePanel_withDoorway
       objectReference: {fileID: 0}
+    - target: {fileID: 4672039749523338101, guid: dd9eec4926d581249b24fc12e82b7cbd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 28f4eab8857e7014c8b11ea6df48b45f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
