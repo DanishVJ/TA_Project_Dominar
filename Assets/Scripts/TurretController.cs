@@ -55,6 +55,7 @@ public class TurretController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"Turret collided with: {other.gameObject.name}");
         // Check if the thing we bumped into has our TurretBoundary script attached
         if (other.TryGetComponent<TurretBoundary>(out TurretBoundary boundary))
         {

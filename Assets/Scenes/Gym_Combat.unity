@@ -268,24 +268,17 @@ MonoBehaviour:
   shooterPivot: {fileID: 2069643151}
   slideStepDistance: 0.5
   slideSpeed: 1
-  maxClimbHeight: 3
-  minClimbHeight: 0
   targetPitchUpAngle: -10
   targetPitchDownAngle: 10
   targetYawRightAngle: 80
   rotationSpeed: 40
---- !u!1 &307523474 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2996518524611448237, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
-  m_PrefabInstance: {fileID: 1409191387}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &307523479
+--- !u!54 &269142016
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307523474}
+  m_GameObject: {fileID: 269142012}
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
@@ -301,11 +294,16 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &378132227 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3854305844314546446, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
+  m_PrefabInstance: {fileID: 1409191387}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &739547133
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +317,7 @@ GameObject:
   - component: {fileID: 739547136}
   - component: {fileID: 739547135}
   - component: {fileID: 739547134}
+  - component: {fileID: 739547139}
   m_Layer: 0
   m_Name: TurretSliderTriggerBottom
   m_TagString: Untagged
@@ -432,11 +431,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &739547139
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739547133}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &888006123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4483032240315759540, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
   m_PrefabInstance: {fileID: 1409191387}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &888006124
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378132227}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5673609, z: 1.1512142}
+  m_Center: {x: 0, y: 0.025387287, z: 0.6560163}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,6 +685,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -80
       objectReference: {fileID: 0}
+    - target: {fileID: 4483032240315759540, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.45
+      objectReference: {fileID: 0}
     - target: {fileID: 5192949314330589324, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -721,9 +772,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6253000646258034511, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 269142014}
-    - targetCorrespondingSourceObject: {fileID: 2996518524611448237, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 6253000646258034511, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 307523479}
+      addedObject: {fileID: 269142016}
+    - targetCorrespondingSourceObject: {fileID: 3854305844314546446, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 888006124}
   m_SourcePrefab: {fileID: 100100000, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
 --- !u!4 &1966306269 stripped
 Transform:
@@ -743,6 +797,7 @@ GameObject:
   - component: {fileID: 1982980726}
   - component: {fileID: 1982980725}
   - component: {fileID: 1982980724}
+  - component: {fileID: 1982980729}
   m_Layer: 0
   m_Name: TurretSliderTriggerTop
   m_TagString: Untagged
@@ -850,12 +905,39 @@ Transform:
   m_GameObject: {fileID: 1982980723}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.039, y: 12.798, z: -0.233}
+  m_LocalPosition: {x: 0.039, y: 12.843, z: -0.233}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1982980729
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982980723}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &2069643151 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4395538565495619018, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
