@@ -55,6 +55,11 @@ public class TurretPatrolState : IState
     public void SetVerticalDirection(int newDirection)
     {
         _verticalDirection = newDirection;
+        
+        if (_currentPhase == PatrolPhase.MovingUp)
+        {
+            _targetPosition = _turret.SliderPivot.localPosition + new Vector3(0, _turret.SlideStepDistance * _verticalDirection, 0);
+        }
     }
     
     private void StartPhase(PatrolPhase newPhase)
