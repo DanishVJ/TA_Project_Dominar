@@ -16,7 +16,7 @@ public class TurretPatrolState : IState
     
     public TurretPatrolState(TurretController controller)
     {
-        this._turret = controller;
+        _turret = controller;
     }
 
     public void Enter()
@@ -30,6 +30,12 @@ public class TurretPatrolState : IState
 
     public void Execute()
     {
+        if (_turret.Sensor.DetectedTarget != null)
+        {
+            _turret.SwitchState(_turret.TrackState);
+            return;
+        }
+        
         switch (_currentPhase)
         {
             case PatrolPhase.MovingUp:
