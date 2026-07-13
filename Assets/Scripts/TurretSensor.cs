@@ -6,15 +6,13 @@ public class TurretSensor : MonoBehaviour
     [Header("Detection Settings")]
     [SerializeField] private LayerMask targetMask;        // Set to your "Player" layer
     [SerializeField] private LayerMask obstructionMask;   // Set to your "Default" / "Wall" layer
-    [SerializeField] private float viewRadius = 10f;       // How far the turret can see
+    [SerializeField] private float viewRadius = 15f;       // Turn this up to increase visual distance!
     [Range(0, 360)]
     [SerializeField] private float viewAngle = 60f;        // The total width of the vision cone
 
-    // Public properties so our states or controller can read these values if needed
     public float ViewRadius => viewRadius;
     public float ViewAngle => viewAngle;
 
-    // This will store the player's transform when detected
     private Transform _detectedTarget;
     public Transform DetectedTarget => _detectedTarget;
 
@@ -34,36 +32,73 @@ public class TurretSensor : MonoBehaviour
     
     private void FindVisibleTarget()
     {
-        // 1. Find all colliders on the Player layer within our view radius
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
         if (targetsInViewRadius.Length > 0)
         {
-            // We found a player collider! Let's get its transform
-            Transform target = targetsInViewRadius[0].transform.root;
-            Vector3 directionToTarget = (target.position - transform.position).normalized;
+            Collider playerCollider = targetsInViewRadius[0];
+            Transform target = playerCollider.transform;
+            
+            // Aim at the bounds center (usually chest height) rather than the root feet pivot
+            Vector3 targetCenterPos = playerCollider.bounds.center;
+            Vector3 directionToTarget = (targetCenterPos - transform.position).normalized;
 
-            // 2. Check if the player is within our forward vision cone angle
+            // Check if the target is within our forward vision cone angle
             if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
             {
-                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                float distanceToTarget = Vector3.Distance(transform.position, targetCenterPos);
 
-                // 3. Raycast to ensure there are no walls (obstructions) between the turret and the player
+                // Raycast to ensure there are no walls between the turret and the player center
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
                 {
-                    // Line of sight is clear! We see the player
-                    _detectedTarget = target;
-                    Debug.Log($"[SENSOR] Target spotted: {_detectedTarget.name}");
+                    _detectedTarget = target.root; // Lock on to root object
                     return; 
                 }
             }
         }
 
-        // If any check fails, the turret loses track of the target
         if (_detectedTarget != null)
         {
             Debug.Log("[SENSOR] Target lost.");
         }
         _detectedTarget = null;
+    }
+
+    // This will draw the visual guides directly in your Unity Scene window
+    private void OnDrawGizmosSelected()
+    {
+        // Draw the main detection radius sphere in light blue
+        Gizmos.color = new Color(0, 0.5f, 1f, 0.15f);
+        Gizmos.DrawWireSphere(transform.position, viewRadius);
+
+        // Draw the main 3D vision spotlight cone
+        Gizmos.color = Color.yellow;
+        
+        // Use transform.rotation as the clean baseline direction
+        Vector3 forward = transform.forward;
+        Vector3 up = transform.up;
+        Vector3 right = transform.right;
+
+        // Calculate the 4 edge directions accurately relative to the barrel orientation
+        Vector3 leftCone = Quaternion.AngleAxis(-viewAngle / 2f, up) * forward;
+        Vector3 rightCone = Quaternion.AngleAxis(viewAngle / 2f, up) * forward;
+        Vector3 upCone = Quaternion.AngleAxis(-viewAngle / 2f, right) * forward;
+        Vector3 downCone = Quaternion.AngleAxis(viewAngle / 2f, right) * forward;
+
+        // Draw the four outer guidelines
+        Gizmos.DrawLine(transform.position, transform.position + leftCone * viewRadius);
+        Gizmos.DrawLine(transform.position, transform.position + rightCone * viewRadius);
+        Gizmos.DrawLine(transform.position, transform.position + upCone * viewRadius);
+        Gizmos.DrawLine(transform.position, transform.position + downCone * viewRadius);
+
+        // Draw a ring connecting the ends to show the true circular cone opening
+        Vector3 endCenter = transform.position + forward * viewRadius;
+        float radiusAtEnd = viewRadius * Mathf.Tan(viewAngle / 2f * Mathf.Deg2Rad);
+        
+        // This draws a helper circle at the target distance
+#if UNITY_EDITOR
+        UnityEditor.Handles.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(endCenter, forward, radiusAtEnd);
+#endif
     }
 }

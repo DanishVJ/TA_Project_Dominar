@@ -23,7 +23,18 @@ public class TurretPatrolState : IState
     {
         Debug.Log("Turret entered PATROL state.");
         
-        _initialShooterRotation = _turret.ShooterPivot.localRotation;
+        _initialShooterRotation = _turret.AbsoluteBaseShooterRotation;
+
+        float currentPitch = Mathf.DeltaAngle(0, _turret.RotatorPivot.localEulerAngles.x);
+    
+        if (currentPitch < -5f) 
+        {
+            _verticalDirection = 1; // Go up
+        }
+        else if (currentPitch > 5f)
+        {
+            _verticalDirection = -1; // Go down
+        }
         
         StartPhase(PatrolPhase.MovingUp);
     }
