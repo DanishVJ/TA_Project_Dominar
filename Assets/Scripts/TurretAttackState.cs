@@ -1,66 +1,51 @@
 using UnityEngine;
 
-public class TurretTrackState : IState
+public class TurretAttackState : IState
 {
     private TurretController _controller;
-    private float _trackTimer;
-    private float _timeToLockOn = 1.0f;
+    private float _fireTimer;
 
-    public TurretTrackState(TurretController controller)
+    public TurretAttackState(TurretController controller)
     {
         _controller = controller;
     }
 
     public void Enter()
     {
-        _trackTimer = 0f;
-        Debug.Log("[STATE] Entered TRACK STATE. Locking onto target...");
+        Debug.Log("[STATE] Entered ATTACK STATE! Commencing firing sequence.");
+        // Instantly ready to shoot on enter, or set to _controller.FireRate for an initial delay
+        _fireTimer = 0f; 
     }
 
     public void Execute()
     {
         Transform target = _controller.Sensor.DetectedTarget;
-        
-        // --- PLAYER LOST: Smoothly return to center first ---
+
+        // --- TARGET LOST ---
+        // If player is dead, out of range, or behind cover, fall back to TrackState to handle re-centering
         if (target == null)
         {
-            _controller.ShooterPivot.localRotation = Quaternion.RotateTowards(
-                _controller.ShooterPivot.localRotation,
-                _controller.AbsoluteBaseShooterRotation,
-                _controller.RotationSpeed * Time.deltaTime
-            );
-
-            _controller.RotatorPivot.localRotation = Quaternion.RotateTowards(
-                _controller.RotatorPivot.localRotation,
-                _controller.AbsoluteBaseRotatorRotation,
-                _controller.RotationSpeed * Time.deltaTime
-            );
-
-            bool yawCentered = Quaternion.Angle(_controller.ShooterPivot.localRotation, _controller.AbsoluteBaseShooterRotation) < 0.5f;
-            bool pitchCentered = Quaternion.Angle(_controller.RotatorPivot.localRotation, _controller.AbsoluteBaseRotatorRotation) < 0.5f;
-
-            if (yawCentered && pitchCentered)
-            {
-                _controller.SwitchState(_controller.PatrolState);
-            }
+            _controller.SwitchState(_controller.TrackState);
             return;
         }
-        
-        // --- PLAYER FOUND: Track rotations AND slider height ---
+
+        // --- SUSTAINED TRACKING ---
+        // Reuses the controller's target coordinates to keep the gun on target while firing
         TrackTargetWithPivots(target.position);
         TrackTargetHeightWithSlider(target.position);
-        
-        _trackTimer += Time.deltaTime;
-        if (_trackTimer >= _timeToLockOn)
+
+        // --- FIRING COOLDOWN TIMER ---
+        _fireTimer -= Time.deltaTime;
+        if (_fireTimer <= 0f)
         {
-            Debug.Log("[STATE] Lock-on complete! Switching to Attack.");
-            _controller.SwitchState(_controller.AttackState); // <-- Transition added here
+            _controller.Shoot();
+            _fireTimer = _controller.FireRate; // Reset timer
         }
     }
 
     public void Exit()
     {
-        Debug.Log("[STATE] Exited TRACK STATE.");
+        Debug.Log("[STATE] Exited ATTACK STATE.");
     }
 
     private void TrackTargetHeightWithSlider(Vector3 targetPosition)
