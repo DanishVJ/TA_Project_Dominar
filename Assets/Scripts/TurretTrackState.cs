@@ -3,8 +3,11 @@ using UnityEngine;
 public class TurretTrackState : IState
 {
     private TurretController _controller;
-    private float _trackTimer;
-    private float _timeToLockOn = 1.0f;
+
+    // How close the turret's barrel must be to pointing directly at the player (in degrees)
+    private float _aimAccuracyThreshold = 3.0f; 
+    // How close the height slider must be to the player's height (in units)
+    private float _heightAccuracyThreshold = 0.1f;
 
     public TurretTrackState(TurretController controller)
     {
@@ -13,8 +16,7 @@ public class TurretTrackState : IState
 
     public void Enter()
     {
-        _trackTimer = 0f;
-        Debug.Log("[STATE] Entered TRACK STATE. Locking onto target...");
+        Debug.Log("[STATE] Entered TRACK STATE. Aligning physical weapon systems...");
     }
 
     public void Execute()
@@ -50,17 +52,32 @@ public class TurretTrackState : IState
         TrackTargetWithPivots(target.position);
         TrackTargetHeightWithSlider(target.position);
         
-        _trackTimer += Time.deltaTime;
-        if (_trackTimer >= _timeToLockOn)
+        // --- PRECISION ALIGNMENT CHECK ---
+        if (IsAlignedWithTarget(target.position))
         {
-            Debug.Log("[STATE] Lock-on complete! Switching to Attack.");
-            _controller.SwitchState(_controller.AttackState); // <-- Transition added here
+            Debug.Log("[STATE] Perfect target lock acquired! Switching to Attack.");
+            _controller.SwitchState(_controller.AttackState);
         }
     }
 
     public void Exit()
     {
         Debug.Log("[STATE] Exited TRACK STATE.");
+    }
+
+    private bool IsAlignedWithTarget(Vector3 targetPosition)
+    {
+        // 1. Check if the slider has finished matching the player's height
+        Vector3 localTargetPos = _controller.SliderPivot.parent.InverseTransformPoint(targetPosition);
+        float heightDifference = Mathf.Abs(_controller.SliderPivot.localPosition.y - localTargetPos.y);
+        bool heightAligned = heightDifference < _heightAccuracyThreshold;
+
+        // 2. Check if the physical barrel (FirePoint) is looking closely at the player
+        Vector3 directionToPlayer = (targetPosition - _controller.FirePoint.position).normalized; // <-- Changed to FirePoint
+        float angleToPlayer = Vector3.Angle(_controller.FirePoint.forward, directionToPlayer);     // <-- Changed to FirePoint
+        bool rotationAligned = angleToPlayer < _aimAccuracyThreshold;
+
+        return heightAligned && rotationAligned;
     }
 
     private void TrackTargetHeightWithSlider(Vector3 targetPosition)
@@ -73,7 +90,7 @@ public class TurretTrackState : IState
         _controller.SliderPivot.localPosition = Vector3.MoveTowards(
             _controller.SliderPivot.localPosition,
             targetSliderPos,
-            _controller.SlideSpeed * Time.deltaTime
+            _controller.TrackSlideSpeed * Time.deltaTime 
         );
     }
 
