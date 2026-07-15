@@ -20,9 +20,19 @@ public class TurretController : MonoBehaviour
     [SerializeField] private float fireRate = 1.0f;              // Seconds between shots
     [SerializeField] private float projectileSpeed = 20f;        // Bullet speed
 
+    [Header("Strategy Pattern (Scriptable Objects)")]
+    [SerializeField] private ProjectileAttackStrategy projectileStrategy;
+    [SerializeField] private LaserAttackStrategy laserStrategy;
+    [Tooltip("If the player is closer than this distance, use Projectiles. If further, use Lasers.")]
+    [SerializeField] private float strategySwitchDistance = 8f;
+
     [Header("Patrol Settings - Movement")]
     [SerializeField] private float slideStepDistance = 0.5f;
     [SerializeField] private float slideSpeed = 1f;
+
+    [Header("Track Settings - Speed Adjustments")]
+    [Tooltip("How fast the turret slides up and down when tracking the player.")]
+    [SerializeField] private float trackSlideSpeed = 4f; // Snappy speed for active tracking!
 
     [Header("Patrol Settings - Rotations")]
     [SerializeField] private float targetPitchUpAngle = -25f;
@@ -35,12 +45,16 @@ public class TurretController : MonoBehaviour
     [SerializeField] private float maxTrackingPitchUp = 30f;
     [SerializeField] private float maxTrackingPitchDown = 15f;
     
+    // Strategy runtime variable
+    private IAttackStrategy _activeStrategy;
+
     public Transform SliderPivot => sliderPivot;
     public Transform RotatorPivot => rotatorPivot;
     public Transform ShooterPivot => shooterPivot;
     public TurretSensor Sensor => turretSensor;
     public float SlideStepDistance => slideStepDistance;
     public float SlideSpeed => slideSpeed;
+    public float TrackSlideSpeed => trackSlideSpeed; // Getter for TrackState to read
     public float TargetPitchUpAngle => targetPitchUpAngle;
     public float TargetPitchDownAngle => targetPitchDownAngle;
     public float TargetYawRightAngle => targetYawRightAngle;
@@ -51,6 +65,7 @@ public class TurretController : MonoBehaviour
 
     // Getters for Weapon Settings
     public float FireRate => fireRate;
+    public Transform FirePoint => firePoint; // <-- CapitalIZED 'F' to prevent name collisions!
     
     public Quaternion AbsoluteBaseShooterRotation { get; private set; }
     public Quaternion AbsoluteBaseRotatorRotation { get; private set; }
@@ -69,12 +84,42 @@ public class TurretController : MonoBehaviour
         AbsoluteBaseShooterRotation = shooterPivot.localRotation;
         AbsoluteBaseRotatorRotation = rotatorPivot.localRotation;
         
+        // Default strategy on startup
+        _activeStrategy = projectileStrategy;
+
         stateMachine.Initialize(PatrolState);
     }
 
     private void Update()
     {
         stateMachine.ExecuteActiveState();
+
+        // Dynamically choose the strategy based on player distance
+        EvaluateStrategy();
+    }
+
+    private void EvaluateStrategy()
+    {
+        if (Sensor.DetectedTarget == null) return;
+
+        float distanceToTarget = Vector3.Distance(transform.position, Sensor.DetectedTarget.position);
+
+        if (distanceToTarget < strategySwitchDistance)
+        {
+            if (_activeStrategy != (IAttackStrategy)projectileStrategy)
+            {
+                _activeStrategy = projectileStrategy;
+                Debug.Log("[STRATEGY] Player is CLOSE. Swapping to PROJECTILE strategy.");
+            }
+        }
+        else
+        {
+            if (_activeStrategy != (IAttackStrategy)laserStrategy)
+            {
+                _activeStrategy = laserStrategy;
+                Debug.Log("[STRATEGY] Player is FAR. Swapping to LASER strategy.");
+            }
+        }
     }
 
     public void SwitchState(IState newState)
@@ -82,18 +127,12 @@ public class TurretController : MonoBehaviour
         stateMachine.ChangeState(newState);
     }
 
-    // Instantiates the projectile and shoots it forward
+    // Instantiates the projectile and shoots it forward using active Strategy
     public void Shoot()
     {
-        if (projectilePrefab != null && firePoint != null)
+        if (_activeStrategy != null)
         {
-            GameObject bullet = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.linearVelocity = firePoint.forward * projectileSpeed;
-            }
-            Destroy(bullet, 5f); // Auto-cleanup after 5 seconds
+            _activeStrategy.Attack(firePoint, projectilePrefab, projectileSpeed, 0f);
         }
     }
 
