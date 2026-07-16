@@ -48,13 +48,17 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
+
+        // Fix: Locks cursor to center screen so cursor offset doesn't cause constant drift
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     
-     void Update()
-     {
-         CalculateMovementExplore();
-         _characterController.Move(_velocity * Time.deltaTime);
-     }
+    void Update()
+    {
+        CalculateMovementExplore();
+        _characterController.Move(_velocity * Time.deltaTime);
+    }
 
     private void FixedUpdate()
     {
@@ -71,32 +75,45 @@ public class PlayerController : MonoBehaviour
         _moveInput = context.ReadValue<Vector2>();
     }
 
-     public void OnJump()
-     {
-         if(_isGrounded)
-         {
-             _velocity.y = jumpVelocity;
-             OnJumpEvent?.Invoke(); 
-         }
-     }
+    public void OnJump()
+    {
+        if(_isGrounded)
+        {
+            _velocity.y = jumpVelocity;
+            OnJumpEvent?.Invoke(); 
+        }
+    }
 
     private void CalculateMovementExplore()
     {
-        _camForward = playerCamera.transform.forward;
-        _camRight = playerCamera.transform.right;
-        _camForward.y = 0;
-        _camRight.y = 0;
-        _camForward.Normalize();
-        _camRight.Normalize();
+        // 1. Grab raw WASD / Arrow Key input
+        Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y);
 
-        _moveDirection = _camRight * _moveInput.x + _camForward * _moveInput.y;
-        if (_moveDirection.sqrMagnitude > 0.01f)
+        // 2. Only run movement & rotation math if there is active input
+        if (inputDirection.sqrMagnitude > 0.01f)
         {
+            // Get the camera's flat angle on the horizon (Y-axis/yaw only)
+            float cameraYaw = playerCamera.transform.eulerAngles.y;
+            
+            // Convert camera angle to a rotation matrix
+            Quaternion cameraRotation = Quaternion.Euler(0f, cameraYaw, 0f);
+
+            // Rotate our WASD input direction relative to the camera's viewing angle
+            // Left (A) and Right (D) now dynamically translate to world-space left/right relative to the screen
+            _moveDirection = cameraRotation * inputDirection;
+
+            // 3. Smoothly rotate the player's model to face the direction they are walking
             _targetRotation = Quaternion.LookRotation(_moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, rotationSpeed * Time.deltaTime);
         }
+        else
+        {
+            // When not pressing keys, movement drops to zero (preventing continuous drift)
+            _moveDirection = Vector3.zero;
+        }
 
-        _velocity = _velocity.y * Vector3.up + moveSpeed * _moveDirection;
+        // 4. Update velocity and apply gravity
+        _velocity = (Vector3.up * _velocity.y) + (_moveDirection * moveSpeed);
         _velocity.y += gravity * Time.deltaTime;
     }
 

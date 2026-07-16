@@ -4,7 +4,8 @@ public class TurretPatrolState : IState
 {
     private TurretController _turret;
     
-    private enum PatrolPhase { MovingUp, YawingRight, PitchingDown, YawingLeft }
+    // Added a "ReturningToStart" phase to handle the transition smoothly
+    private enum PatrolPhase { ReturningToStart, MovingUp, YawingRight, PitchingDown, YawingLeft }
     private PatrolPhase _currentPhase;
     
     private Vector3 _targetPosition;
@@ -36,7 +37,8 @@ public class TurretPatrolState : IState
             _verticalDirection = -1; // Go down
         }
         
-        StartPhase(PatrolPhase.MovingUp);
+        // Start by smoothly returning to the default starting rotations
+        StartPhase(PatrolPhase.ReturningToStart);
     }
 
     public void Execute()
@@ -49,6 +51,9 @@ public class TurretPatrolState : IState
         
         switch (_currentPhase)
         {
+            case PatrolPhase.ReturningToStart:
+                HandleReturningToStart();
+                break;
             case PatrolPhase.MovingUp:
                 HandleMovingUp();
                 break;
@@ -85,13 +90,18 @@ public class TurretPatrolState : IState
 
         switch (_currentPhase)
         {
+            case PatrolPhase.ReturningToStart:
+                // Set targets to default starting rotations
+                _targetRotationYaw = _initialShooterRotation;
+                _targetRotationPitch = Quaternion.Euler(_turret.TargetPitchUpAngle, 0, 0);
+                break;
+
             case PatrolPhase.MovingUp:
                 _targetPosition = _turret.SliderPivot.localPosition + new Vector3(0, _turret.SlideStepDistance * _verticalDirection, 0);
                 _targetRotationPitch = Quaternion.Euler(_turret.TargetPitchUpAngle, 0, 0);
                 break;
 
             case PatrolPhase.YawingRight:
-                
                 _targetRotationYaw = Quaternion.Euler(0, _turret.TargetYawRightAngle, 0);
                 break;
 
@@ -100,9 +110,33 @@ public class TurretPatrolState : IState
                 break;
 
             case PatrolPhase.YawingLeft:
-    
                 _targetRotationYaw = _initialShooterRotation;
                 break;
+        }
+    }
+
+    private void HandleReturningToStart()
+    {
+        // Smoothly rotate horizontal (Yaw) and vertical (Pitch) back to default patrol starts
+        _turret.ShooterPivot.localRotation = Quaternion.RotateTowards(
+            _turret.ShooterPivot.localRotation, 
+            _targetRotationYaw, 
+            _turret.RotationSpeed * Time.deltaTime
+        );
+
+        _turret.RotatorPivot.localRotation = Quaternion.RotateTowards(
+            _turret.RotatorPivot.localRotation, 
+            _targetRotationPitch, 
+            _turret.RotationSpeed * Time.deltaTime
+        );
+
+        bool yawAligned = Quaternion.Angle(_turret.ShooterPivot.localRotation, _targetRotationYaw) < 0.5f;
+        bool pitchAligned = Quaternion.Angle(_turret.RotatorPivot.localRotation, _targetRotationPitch) < 0.5f;
+
+        // Once fully aligned to our start values, safely kick off the patrol sequence!
+        if (yawAligned && pitchAligned)
+        {
+            StartPhase(PatrolPhase.MovingUp);
         }
     }
     

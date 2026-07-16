@@ -23,28 +23,10 @@ public class TurretTrackState : IState
     {
         Transform target = _controller.Sensor.DetectedTarget;
         
-        // --- PLAYER LOST: Smoothly return to center first ---
+        // --- PLAYER LOST: Go straight back to patrol ---
         if (target == null)
         {
-            _controller.ShooterPivot.localRotation = Quaternion.RotateTowards(
-                _controller.ShooterPivot.localRotation,
-                _controller.AbsoluteBaseShooterRotation,
-                _controller.RotationSpeed * Time.deltaTime
-            );
-
-            _controller.RotatorPivot.localRotation = Quaternion.RotateTowards(
-                _controller.RotatorPivot.localRotation,
-                _controller.AbsoluteBaseRotatorRotation,
-                _controller.RotationSpeed * Time.deltaTime
-            );
-
-            bool yawCentered = Quaternion.Angle(_controller.ShooterPivot.localRotation, _controller.AbsoluteBaseShooterRotation) < 0.5f;
-            bool pitchCentered = Quaternion.Angle(_controller.RotatorPivot.localRotation, _controller.AbsoluteBaseRotatorRotation) < 0.5f;
-
-            if (yawCentered && pitchCentered)
-            {
-                _controller.SwitchState(_controller.PatrolState);
-            }
+            _controller.SwitchState(_controller.PatrolState);
             return;
         }
         
@@ -73,8 +55,8 @@ public class TurretTrackState : IState
         bool heightAligned = heightDifference < _heightAccuracyThreshold;
 
         // 2. Check if the physical barrel (FirePoint) is looking closely at the player
-        Vector3 directionToPlayer = (targetPosition - _controller.FirePoint.position).normalized; // <-- Changed to FirePoint
-        float angleToPlayer = Vector3.Angle(_controller.FirePoint.forward, directionToPlayer);     // <-- Changed to FirePoint
+        Vector3 directionToPlayer = (targetPosition - _controller.FirePoint.position).normalized; 
+        float angleToPlayer = Vector3.Angle(_controller.FirePoint.forward, directionToPlayer);     
         bool rotationAligned = angleToPlayer < _aimAccuracyThreshold;
 
         return heightAligned && rotationAligned;
