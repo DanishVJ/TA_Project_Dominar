@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1845071555066353180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RoomFloor_Radial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3487136654164894953}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,6 +132,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -383223637986262144, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -361496572488733739, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -139,6 +143,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: m_Name
       value: Modular_RadialRoomFloorSegment
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1119015257429545023, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310329244192907079, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

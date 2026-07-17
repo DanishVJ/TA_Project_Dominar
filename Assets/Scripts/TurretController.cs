@@ -8,6 +8,9 @@ public class TurretController : MonoBehaviour
     public TurretTrackState TrackState { get; private set; }
     public TurretAttackState AttackState { get; private set; } // Added Attack State
     
+    [Header("Visual Indicators")]
+    [SerializeField] private Light turretSpotLight;              // Drag your spotlight here in Unity!
+
     [Header("Assembly Component References")]
     [SerializeField] private Transform sliderPivot;
     [SerializeField] private Transform rotatorPivot;
@@ -88,6 +91,7 @@ public class TurretController : MonoBehaviour
         _activeStrategy = projectileStrategy;
 
         stateMachine.Initialize(PatrolState);
+        UpdateLightColor(PatrolState); // Set initial green color on startup
     }
 
     private void Update()
@@ -125,6 +129,28 @@ public class TurretController : MonoBehaviour
     public void SwitchState(IState newState)
     {
         stateMachine.ChangeState(newState);
+        UpdateLightColor(newState); // Automatically swap colors whenever a state changes!
+    }
+
+    // Handles the traffic light logic based on the state machine
+    private void UpdateLightColor(IState state)
+    {
+        // Find the light controller component on this turret
+        TurretLightController lightController = GetComponentInChildren<TurretLightController>();
+        if (lightController == null) return;
+
+        if (state == PatrolState)
+        {
+            lightController.SetPatrolColor();
+        }
+        else if (state == TrackState)
+        {
+            lightController.SetTrackColor();
+        }
+        else if (state == AttackState)
+        {
+            lightController.SetAttackColor();
+        }
     }
 
     // Instantiates the projectile and shoots it forward using active Strategy
