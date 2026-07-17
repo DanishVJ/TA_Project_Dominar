@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7603892230035196993}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step_Radial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 925135852274876472}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,6 +119,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2887f66c3ff31d44f8ec834c7282bd8b, type: 3}
       propertyPath: m_Name
       value: Modular_Step_Radial
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2887f66c3ff31d44f8ec834c7282bd8b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6710330366506905257, guid: 2887f66c3ff31d44f8ec834c7282bd8b, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

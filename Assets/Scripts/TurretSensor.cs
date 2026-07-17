@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class TurretSensor : MonoBehaviour
 {
@@ -16,18 +15,12 @@ public class TurretSensor : MonoBehaviour
     private Transform _detectedTarget;
     public Transform DetectedTarget => _detectedTarget;
 
-    private void Start()
+    // EXPOSED CENTER MASS PROPERTY: Allows states to track target center instead of feet pivot
+    public Vector3 TargetCenterPosition { get; private set; }
+
+    private void Update()
     {
-        StartCoroutine(FindTargetsWithDelay(0.2f)); 
-    }
-    
-    private IEnumerator FindTargetsWithDelay(float delay)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(delay);
-            FindVisibleTarget();
-        }
+        FindVisibleTarget();
     }
     
     private void FindVisibleTarget()
@@ -52,6 +45,7 @@ public class TurretSensor : MonoBehaviour
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
                 {
                     _detectedTarget = target.root; // Lock on to root object
+                    TargetCenterPosition = targetCenterPos; // Store center mass location
                     return; 
                 }
             }
@@ -64,38 +58,30 @@ public class TurretSensor : MonoBehaviour
         _detectedTarget = null;
     }
 
-    // This will draw the visual guides directly in your Unity Scene window
     private void OnDrawGizmosSelected()
     {
-        // Draw the main detection radius sphere in light blue
         Gizmos.color = new Color(0, 0.5f, 1f, 0.15f);
         Gizmos.DrawWireSphere(transform.position, viewRadius);
 
-        // Draw the main 3D vision spotlight cone
         Gizmos.color = Color.yellow;
         
-        // Use transform.rotation as the clean baseline direction
         Vector3 forward = transform.forward;
         Vector3 up = transform.up;
         Vector3 right = transform.right;
 
-        // Calculate the 4 edge directions accurately relative to the barrel orientation
         Vector3 leftCone = Quaternion.AngleAxis(-viewAngle / 2f, up) * forward;
         Vector3 rightCone = Quaternion.AngleAxis(viewAngle / 2f, up) * forward;
         Vector3 upCone = Quaternion.AngleAxis(-viewAngle / 2f, right) * forward;
         Vector3 downCone = Quaternion.AngleAxis(viewAngle / 2f, right) * forward;
 
-        // Draw the four outer guidelines
         Gizmos.DrawLine(transform.position, transform.position + leftCone * viewRadius);
         Gizmos.DrawLine(transform.position, transform.position + rightCone * viewRadius);
         Gizmos.DrawLine(transform.position, transform.position + upCone * viewRadius);
         Gizmos.DrawLine(transform.position, transform.position + downCone * viewRadius);
 
-        // Draw a ring connecting the ends to show the true circular cone opening
         Vector3 endCenter = transform.position + forward * viewRadius;
         float radiusAtEnd = viewRadius * Mathf.Tan(viewAngle / 2f * Mathf.Deg2Rad);
         
-        // This draws a helper circle at the target distance
 #if UNITY_EDITOR
         UnityEditor.Handles.color = Color.yellow;
         UnityEditor.Handles.DrawWireDisc(endCenter, forward, radiusAtEnd);
