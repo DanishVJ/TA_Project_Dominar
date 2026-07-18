@@ -31,17 +31,7 @@ public class GameStateManager : MonoBehaviour
             Destroy(gameObject); 
             return; 
         }
-
         controls = new PlayerControls();
-    }
-
-    private void Start() 
-    {
-        // Set initial state based on starting scene
-        if (SceneManager.GetActiveScene().name == "MainMenuScene") 
-            SetState(GameState.MainMenu);
-        else 
-            SetState(GameState.Playing);
     }
 
     private void OnEnable()
@@ -51,7 +41,6 @@ public class GameStateManager : MonoBehaviour
             controls.Player.Pause.performed += OnPauseAction;
             controls.Enable();
         }
-        // Listen for scene changes to update UI references
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -67,8 +56,26 @@ public class GameStateManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Re-run handle state to refresh panel references for the new scene
-        SetState(currentState);
+        // 1. Force the script to drop the old, dead references
+        mainMenuPanel = null;
+        gameplayHUDPanel = null;
+        pauseMenuPanel = null;
+        winMenuPanel = null;
+        gameOverPanel = null;
+
+        // 2. Re-find them in the new scene
+        // NOTE: Ensure your panels are ENABLED in the inspector so this can find them
+        mainMenuPanel = GameObject.Find("MainMenuPanel");
+        gameplayHUDPanel = GameObject.Find("GameplayHUDPanel");
+        pauseMenuPanel = GameObject.Find("PauseMenuPanel");
+        winMenuPanel = GameObject.Find("winMenuPanel"); // Note: check capitalization
+        gameOverPanel = GameObject.Find("gameOverPanel"); // Note: check capitalization
+
+        // 3. Set the state
+        if (scene.name == "MainMenuScene") 
+            SetState(GameState.MainMenu);
+        else 
+            SetState(GameState.Playing);
     }
 
     private void OnPauseAction(InputAction.CallbackContext context) => TogglePause();
@@ -79,6 +86,11 @@ public class GameStateManager : MonoBehaviour
         else if (currentState == GameState.Paused) SetState(GameState.Playing);
     }
 
+    public void StartGame(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     public void SetState(GameState newState)
     {
         currentState = newState;
@@ -87,12 +99,9 @@ public class GameStateManager : MonoBehaviour
 
     private void HandleStateChanges(GameState state)
     {
-        // Hide all first
-        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
-        if (gameplayHUDPanel != null) gameplayHUDPanel.SetActive(false);
-        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
-        if (winMenuPanel != null) winMenuPanel.SetActive(false);
-        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        // Make sure panels are found if they were null
+        if (mainMenuPanel == null) mainMenuPanel = GameObject.Find("MainMenuPanel");
+        if (pauseMenuPanel == null) pauseMenuPanel = GameObject.Find("PauseMenuPanel");
 
         CancelInvoke("LockCursorDelayed");
 
@@ -102,36 +111,32 @@ public class GameStateManager : MonoBehaviour
                 Time.timeScale = 0f; 
                 Cursor.lockState = CursorLockMode.None; 
                 Cursor.visible = true;
-                if (mainMenuPanel != null) mainMenuPanel.SetActive(true);
+                SetActivePanel(mainMenuPanel);
                 break;
 
             case GameState.Playing:
                 Time.timeScale = 1f; 
                 Invoke("LockCursorDelayed", 0.1f);
-                if (gameplayHUDPanel != null) gameplayHUDPanel.SetActive(true);
+                SetActivePanel(gameplayHUDPanel);
                 break;
 
             case GameState.Paused:
                 Time.timeScale = 0f; 
                 Cursor.lockState = CursorLockMode.None; 
                 Cursor.visible = true;
-                if (pauseMenuPanel != null) pauseMenuPanel.SetActive(true);
-                break;
-
-            case GameState.GameWin:
-                Time.timeScale = 0f;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                if (winMenuPanel != null) winMenuPanel.SetActive(true);
-                break;
-
-            case GameState.GameOver:
-                Time.timeScale = 0f;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                if (gameOverPanel != null) gameOverPanel.SetActive(true);
+                SetActivePanel(pauseMenuPanel);
                 break;
         }
+    }
+
+    private void SetActivePanel(GameObject panel)
+    {
+        // Simple helper to hide all, show only the one passed in
+        if (mainMenuPanel) mainMenuPanel.SetActive(panel == mainMenuPanel);
+        if (gameplayHUDPanel) gameplayHUDPanel.SetActive(panel == gameplayHUDPanel);
+        if (pauseMenuPanel) pauseMenuPanel.SetActive(panel == pauseMenuPanel);
+        if (winMenuPanel) winMenuPanel.SetActive(panel == winMenuPanel);
+        if (gameOverPanel) gameOverPanel.SetActive(panel == gameOverPanel);
     }
 
     private void LockCursorDelayed()
