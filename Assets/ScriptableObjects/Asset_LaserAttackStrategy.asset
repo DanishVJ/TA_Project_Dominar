@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf393dc1cf737ad48bc8a0a21c3b8397, type: 3}
   m_Name: Asset_LaserAttackStrategy
   m_EditorClassIdentifier: Assembly-CSharp::LaserAttackStrategy
-  damage: 15
-  maxLaserDistance: 50
+  damage: 5
+  maxLaserDistance: 30
+  beamDuration: 0.08
