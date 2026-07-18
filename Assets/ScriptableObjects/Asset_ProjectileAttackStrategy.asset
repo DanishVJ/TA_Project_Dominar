@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c72c534259517704a9bf83e4057b9e01, type: 3}
   m_Name: Asset_ProjectileAttackStrategy
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileAttackStrategy
-  damage: 10
+  damage: 5

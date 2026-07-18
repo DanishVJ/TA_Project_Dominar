@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // <-- Added this to allow reloading scenes
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -28,15 +27,12 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        Debug.Log("[PLAYER] You died! Restarting level in 2 seconds...");
+        Debug.Log("[PLAYER] You died! Triggering Game Over screen...");
         
-        // Reloads the level after a 2-second delay
-        Invoke(nameof(RestartLevel), 2f);
-    }
-
-    private void RestartLevel()
-    {
-        Scene activeScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(activeScene.name);
+        // Tell our GameStateManager to switch to the GameOver state instantly
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetState(GameState.GameOver);
+        }
     }
 }
