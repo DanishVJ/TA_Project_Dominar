@@ -21,6 +21,8 @@ public class InputManager : Singleton<InputManager>
         _controls.Player.Move.canceled += OnMove;
         
         _controls.Player.Jump.performed += OnJump;
+        
+        _controls.Player.Pause.performed += OnPauseAction;
     }
     
     private void OnDisable()
@@ -41,6 +43,10 @@ public class InputManager : Singleton<InputManager>
         _playerController.OnJump();
     }
 
+    public void OnPauseAction(InputAction.CallbackContext context)
+    {
+        GameStateManager.Instance.TogglePause();
+    }
 
     void Start()
     {
