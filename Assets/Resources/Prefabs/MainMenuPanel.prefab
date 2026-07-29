@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 8385782901834072474}
   - component: {fileID: 4778021228176864596}
   - component: {fileID: 333119776563374643}
+  - component: {fileID: 2624507468891108360}
   m_Layer: 5
   m_Name: Quitbutton
   m_TagString: Untagged
@@ -270,6 +271,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2624507468891108360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2243597856445070548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911ccf03a5a742bdbe10ac7a79c9656b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.QuitButton
 --- !u!1 &4379081733691521327
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +848,7 @@ GameObject:
   - component: {fileID: 8788047605266020341}
   - component: {fileID: 6537822213999339190}
   - component: {fileID: 8999468875359190260}
+  - component: {fileID: 7579696971756161790}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -956,3 +970,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7579696971756161790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9152113041628414214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770dcdb1929d47ad82add43062a2cd78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.StartButton

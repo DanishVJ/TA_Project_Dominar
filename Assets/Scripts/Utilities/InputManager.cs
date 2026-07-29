@@ -31,6 +31,8 @@ public class InputManager : Singleton<InputManager>
         _controls.Player.Move.canceled -= OnMove;
         
         _controls.Player.Jump.performed -= OnJump;
+        
+        _controls.Player.Pause.performed -= OnPauseAction;
     }
     
     public void OnMove(InputAction.CallbackContext context)

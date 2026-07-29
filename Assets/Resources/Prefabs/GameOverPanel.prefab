@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9219813620755508092}
   - component: {fileID: 7424479576282934500}
   - component: {fileID: 8014103086130376090}
+  - component: {fileID: 593466211048613906}
   m_Layer: 5
   m_Name: ReplayButton
   m_TagString: Untagged
@@ -133,6 +134,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &593466211048613906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349542962445955842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d35c4ec18a84bc3a416ffbe53806e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.RestartButton
 --- !u!1 &3231662835681528054
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +848,7 @@ GameObject:
   - component: {fileID: 5592697446673234830}
   - component: {fileID: 6363937023217052837}
   - component: {fileID: 7994010276855928549}
+  - component: {fileID: 7932406560629100549}
   m_Layer: 5
   m_Name: Quitbutton
   m_TagString: Untagged
@@ -956,3 +970,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7932406560629100549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8985339776967515737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911ccf03a5a742bdbe10ac7a79c9656b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.QuitButton
