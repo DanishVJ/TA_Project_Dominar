@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8904706956600139498
 Transform:
@@ -46,7 +46,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1974744571556658810
 Transform:
@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: -2627172699264371473, guid: 1b3b3db4e7794b541af8fe5ff1779822, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1b3b3db4e7794b541af8fe5ff1779822, type: 3}
       propertyPath: m_Name
       value: Modular_Edge_Horizontal
@@ -123,6 +127,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1b3b3db4e7794b541af8fe5ff1779822, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1b3b3db4e7794b541af8fe5ff1779822, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 3148636407091773999, guid: 1b3b3db4e7794b541af8fe5ff1779822, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

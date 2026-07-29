@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,35 +20,23 @@ public class PlayerController : MonoBehaviour
 
     public event Action OnJumpEvent;
     
-    private Vector2 _moveInput;
+    public Vector2 moveInput;
     private Vector3 _moveDirection;
     private CharacterController _characterController;
     private Vector3 _velocity;
     private bool _isGrounded;
-    private PlayerControls _controls;
 
     public bool IsGrounded() => _isGrounded;
     public Vector3 GetPlayerVelocity() => _velocity;
     
-    void Awake()
-    {
-        _controls = new PlayerControls();
-        
-        _controls.Player.Move.performed += OnMove;
-        _controls.Player.Move.canceled += OnMove;
-        
-        _controls.Player.Jump.performed += ctx => OnJump();
-    }
-
     void OnEnable()
     {
-        _controls.Enable();
         ConfigureMouseForVM();
     }
 
     void OnDisable()
     {
-        _controls.Disable();
+        
     }
     
     void Start()
@@ -58,6 +47,8 @@ public class PlayerController : MonoBehaviour
         {
             playerCamera = Camera.main;
         }
+
+        var controller = InputManager.Instance;
 
         ConfigureMouseForVM();
     }
@@ -99,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        _moveInput = context.ReadValue<Vector2>();
+        moveInput = context.ReadValue<Vector2>();
     }
 
     public void OnJump()
@@ -107,23 +98,22 @@ public class PlayerController : MonoBehaviour
         if(_isGrounded)
         {
             _velocity.y = jumpVelocity;
-            OnJumpEvent?.Invoke(); 
         }
     }
 
     private void CalculateMovementExplore()
     {
         // 1. ABSOLUTE TANK ROTATION: A/D rotates the player body directly around world Y-axis
-        if (Mathf.Abs(_moveInput.x) > 0.01f)
+        if (Mathf.Abs(moveInput.x) > 0.01f)
         {
-            float rotationAmount = _moveInput.x * rotationSpeed * Time.deltaTime;
+            float rotationAmount = moveInput.x * rotationSpeed * Time.deltaTime;
             transform.Rotate(0f, rotationAmount, 0f);
         }
 
         // 2. ABSOLUTE TANK MOVEMENT: W/S moves purely along the player's own local forward direction
-        if (Mathf.Abs(_moveInput.y) > 0.01f)
+        if (Mathf.Abs(moveInput.y) > 0.01f)
         {
-            _moveDirection = transform.forward * _moveInput.y;
+            _moveDirection = transform.forward * moveInput.y;
         }
         else
         {

@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class GameStateManager : MonoBehaviour
+public class GameStateManager : Singleton<GameStateManager>
 {
-    public static GameStateManager Instance { get; private set; }
     private PlayerControls controls; 
 
     [Header("Current State")]
@@ -18,19 +17,9 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject winMenuPanel;
     [SerializeField] private GameObject gameOverPanel;
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance == null) 
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else 
-        { 
-            Destroy(gameObject); 
-            return; 
-        }
-        controls = new PlayerControls();
+       controls = new PlayerControls();
     }
 
     private void OnEnable()
