@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameStateManager : Singleton<GameStateManager>
 {
-    private PlayerControls controls; 
+    private PlayerControls _controls; 
 
     [Header("Current State")]
     [SerializeField] private GameState currentState;

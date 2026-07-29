@@ -1,9 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class MenuController : MonoBehaviour
+public class MenuController : Singleton<MenuController>
 {
     [SerializeField] private string gameSceneName = "SampleScene";
+
+    private Button _playButton;
+    
+    
+
+    public void OnEnable()
+    {
+        _playButton.onClick.AddListener(PlayGame);
+    }
 
     public void PlayGame()
     {
