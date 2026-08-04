@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 100f; // Note: Boosted default value for snappier in-place tank turning
+    [SerializeField] private float rotationSpeed = 100f; 
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpVelocity = 5f;
 
@@ -18,6 +17,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.3f;
     [SerializeField] private LayerMask groundLayer;
 
+    [Space(10)]
+    [Header("Interaction Detection")]
+    [SerializeField] private float interactionCheckRadius = 2f;
+    [SerializeField] private LayerMask interactableLayer;
+
     public event Action OnJumpEvent;
     
     public Vector2 moveInput;
@@ -25,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _velocity;
     private bool _isGrounded;
+
+    private IInteractable _currentInteractable;
 
     public bool IsGrounded() => _isGrounded;
     public Vector3 GetPlayerVelocity() => _velocity;
@@ -45,6 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         CalculateMovementExplore();
         _characterController.Move(_velocity * Time.deltaTime);
+        CheckForInteractables();
     }
 
     private void FixedUpdate()
@@ -70,9 +77,52 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnInteract()
+    {
+        if (_currentInteractable != null)
+        {
+            _currentInteractable.Interact();
+        }
+    }
+
+    private void CheckForInteractables()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, interactionCheckRadius, interactableLayer);
+        
+        IInteractable closestInteractable = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<IInteractable>(out var interactable))
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestInteractable = interactable;
+                }
+            }
+        }
+
+        // Log only when the interaction target changes
+        if (_currentInteractable != closestInteractable)
+        {
+            _currentInteractable = closestInteractable;
+
+            if (_currentInteractable != null)
+            {
+                Debug.Log($"Detected interactable: {(_currentInteractable as MonoBehaviour)?.gameObject.name}");
+            }
+            else
+            {
+                Debug.Log("Left interaction range.");
+            }
+        }
+    }
+
     private void CalculateMovementExplore()
     {
-        // 1. Get Camera Vectors and flatten them on the Y plane
         Vector3 cameraForward = playerCamera.transform.forward;
         Vector3 cameraRight = playerCamera.transform.right;
         
@@ -82,17 +132,14 @@ public class PlayerController : MonoBehaviour
         cameraForward.Normalize();
         cameraRight.Normalize();
         
-        // 2. Calculate movement direction from inputs and camera vectors
         Vector3 moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;
 
-        // 3. Smoothly rotate toward movement heading if there is input
         if (moveDirection.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        // 4. Update velocity and apply gravity
         _velocity = (Vector3.up * _velocity.y) + (moveDirection * moveSpeed);
         _velocity.y += gravity * Time.deltaTime;
     }
@@ -107,7 +154,8 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.purple;
         Gizmos.DrawSphere(transform.position + groundCheckOffset, groundCheckRadius);
         Gizmos.DrawSphere(transform.position + groundCheckOffset + Vector3.down * groundCheckDistance, groundCheckRadius);
-        Gizmos.DrawCube(transform.position + groundCheckOffset + Vector3.down * groundCheckDistance / 2, 
-            new Vector3(1.5f * groundCheckRadius, groundCheckDistance, 1.5f * groundCheckRadius));
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactionCheckRadius);
     }
 }
