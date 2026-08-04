@@ -72,25 +72,28 @@ public class PlayerController : MonoBehaviour
 
     private void CalculateMovementExplore()
     {
-        // 1. ABSOLUTE TANK ROTATION: A/D rotates the player body directly around world Y-axis
-        if (Mathf.Abs(moveInput.x) > 0.01f)
+        // 1. Get Camera Vectors and flatten them on the Y plane
+        Vector3 cameraForward = playerCamera.transform.forward;
+        Vector3 cameraRight = playerCamera.transform.right;
+        
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+        
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+        
+        // 2. Calculate movement direction from inputs and camera vectors
+        Vector3 moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;
+
+        // 3. Smoothly rotate toward movement heading if there is input
+        if (moveDirection.sqrMagnitude > 0.01f)
         {
-            float rotationAmount = moveInput.x * rotationSpeed * Time.deltaTime;
-            transform.Rotate(0f, rotationAmount, 0f);
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        // 2. ABSOLUTE TANK MOVEMENT: W/S moves purely along the player's own local forward direction
-        if (Mathf.Abs(moveInput.y) > 0.01f)
-        {
-            _moveDirection = transform.forward * moveInput.y;
-        }
-        else
-        {
-            _moveDirection = Vector3.zero;
-        }
-
-        // 3. Update final velocity components and apply gravity
-        _velocity = (Vector3.up * _velocity.y) + (_moveDirection * moveSpeed);
+        // 4. Update velocity and apply gravity
+        _velocity = (Vector3.up * _velocity.y) + (moveDirection * moveSpeed);
         _velocity.y += gravity * Time.deltaTime;
     }
 
