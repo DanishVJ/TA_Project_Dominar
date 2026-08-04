@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
+
+    protected virtual bool _persistBetweenScenes => true;
  
     public static T Instance
     {
@@ -37,5 +39,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+        if (_persistBetweenScenes) DontDestroyOnLoad(gameObject);
     }
 }

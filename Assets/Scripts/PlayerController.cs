@@ -29,16 +29,6 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded() => _isGrounded;
     public Vector3 GetPlayerVelocity() => _velocity;
     
-    void OnEnable()
-    {
-        ConfigureMouseForVM();
-    }
-
-    void OnDisable()
-    {
-        
-    }
-    
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -49,31 +39,10 @@ public class PlayerController : MonoBehaviour
         }
 
         var controller = InputManager.Instance;
-
-        ConfigureMouseForVM();
-    }
-
-    private void ConfigureMouseForVM()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus)
-        {
-            ConfigureMouseForVM();
-        }
     }
     
     void Update()
     {
-        if (Cursor.lockState != CursorLockMode.Locked)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
         CalculateMovementExplore();
         _characterController.Move(_velocity * Time.deltaTime);
     }

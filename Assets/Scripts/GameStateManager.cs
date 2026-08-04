@@ -21,17 +21,7 @@ public class GameStateManager : Singleton<GameStateManager>
 
     private void Awake()
     {
-        mainMenuPanel = Resources.Load<GameObject>("Prefabs/MainMenuPanel");
-        gameplayHUDPanel = Resources.Load<GameObject>("Prefabs/GameplayHUDPanel");
-        pauseMenuPanel = Resources.Load<GameObject>("Prefabs/PauseMenuPanel");
-        winMenuPanel = Resources.Load<GameObject>("Prefabs/WinMenuPanel");
-        gameOverPanel = Resources.Load<GameObject>("Prefabs/GameOverPanel");
-        _canvas = FindFirstObjectByType<Canvas>();
-        mainMenuPanel = Instantiate(mainMenuPanel,  _canvas.transform);
-        gameplayHUDPanel = Instantiate(gameplayHUDPanel, _canvas.transform);
-        pauseMenuPanel = Instantiate(pauseMenuPanel, _canvas.transform);
-        winMenuPanel = Instantiate(winMenuPanel, _canvas.transform);
-        gameOverPanel = Instantiate(gameOverPanel, _canvas.transform);
+        base.Awake();
     }
     
     
@@ -48,20 +38,44 @@ public class GameStateManager : Singleton<GameStateManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("OnSceneLoaded");
+        mainMenuPanel = Resources.Load<GameObject>("Prefabs/MainMenuPanel");
+        gameplayHUDPanel = Resources.Load<GameObject>("Prefabs/GameplayHUDPanel");
+        pauseMenuPanel = Resources.Load<GameObject>("Prefabs/PauseMenuPanel");
+        winMenuPanel = Resources.Load<GameObject>("Prefabs/WinMenuPanel");
+        gameOverPanel = Resources.Load<GameObject>("Prefabs/GameOverPanel");
+        _canvas = FindFirstObjectByType<Canvas>();
+        mainMenuPanel = Instantiate(mainMenuPanel,  _canvas.transform);
+        // gameplayHUDPanel = Instantiate(gameplayHUDPanel, _canvas.transform);
+        pauseMenuPanel = Instantiate(pauseMenuPanel, _canvas.transform);
+        winMenuPanel = Instantiate(winMenuPanel, _canvas.transform);
+        gameOverPanel = Instantiate(gameOverPanel, _canvas.transform);
+        
         Debug.Log("loaded");
         if (scene.name == "MainMenuScene")
         {
             SetState(GameState.MainMenu);
             Debug.Log("loaded main");
         }
-        else 
+        else
+        {
             SetState(GameState.Playing);
+            Debug.Log("loaded playing");
+        }
     }
 
     public void TogglePause()
     {
-        if (currentState == GameState.Playing) SetState(GameState.Paused);
-        else if (currentState == GameState.Paused) SetState(GameState.Playing);
+        if (currentState == GameState.Playing)
+        {
+            SetState(GameState.Paused);
+        }
+        else if (currentState == GameState.Paused)
+        {
+            SetState(GameState.Playing);
+            pauseMenuPanel.SetActive(false);
+        }
+        
     }
 
     public void SetState(GameState newState)
@@ -86,12 +100,13 @@ public class GameStateManager : Singleton<GameStateManager>
                 Time.timeScale = 1f; 
                 Invoke("LockCursorDelayed", 0.1f);
                 SetActivePanel(gameplayHUDPanel);
+                pauseMenuPanel.SetActive(false);
                 break;
             case GameState.Paused:
                 Time.timeScale = 0f; 
                 Cursor.lockState = CursorLockMode.None; 
                 Cursor.visible = true;
-                SetActivePanel(pauseMenuPanel);
+              SetActivePanel(pauseMenuPanel);
                 break;
             case GameState.GameWin:
                 Time.timeScale = 0f;
