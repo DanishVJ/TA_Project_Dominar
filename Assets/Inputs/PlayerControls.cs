@@ -136,6 +136,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TerminalNavigate"",
+                    ""type"": ""Value"",
+                    ""id"": ""cb5eb2a0-c233-464d-9d62-0b23f7ccd50a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TerminalSubmit"",
+                    ""type"": ""Button"",
+                    ""id"": ""e56a924e-276a-4698-a02f-febfcb1e08aa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -237,6 +255,72 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""15be0855-7197-4127-942c-4baa29e30c7a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TerminalNavigate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""21472c35-ec51-4cd5-b376-0344591f1b13"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TerminalNavigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""4cfc1590-f554-436d-98fa-4c17c8115e0b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TerminalNavigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c57bbf98-590c-49fb-a06d-9e5f476df14a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TerminalNavigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""34e56ff6-69bf-46eb-a8f4-39b4eddb3f6f"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TerminalNavigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed9d8d03-04cf-474a-bd35-790dc9581f35"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TerminalSubmit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -250,6 +334,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_TerminalNavigate = m_Player.FindAction("TerminalNavigate", throwIfNotFound: true);
+        m_Player_TerminalSubmit = m_Player.FindAction("TerminalSubmit", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -335,6 +421,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_TerminalNavigate;
+    private readonly InputAction m_Player_TerminalSubmit;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -366,6 +454,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/TerminalNavigate".
+        /// </summary>
+        public InputAction @TerminalNavigate => m_Wrapper.m_Player_TerminalNavigate;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/TerminalSubmit".
+        /// </summary>
+        public InputAction @TerminalSubmit => m_Wrapper.m_Player_TerminalSubmit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -407,6 +503,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @TerminalNavigate.started += instance.OnTerminalNavigate;
+            @TerminalNavigate.performed += instance.OnTerminalNavigate;
+            @TerminalNavigate.canceled += instance.OnTerminalNavigate;
+            @TerminalSubmit.started += instance.OnTerminalSubmit;
+            @TerminalSubmit.performed += instance.OnTerminalSubmit;
+            @TerminalSubmit.canceled += instance.OnTerminalSubmit;
         }
 
         /// <summary>
@@ -433,6 +535,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @TerminalNavigate.started -= instance.OnTerminalNavigate;
+            @TerminalNavigate.performed -= instance.OnTerminalNavigate;
+            @TerminalNavigate.canceled -= instance.OnTerminalNavigate;
+            @TerminalSubmit.started -= instance.OnTerminalSubmit;
+            @TerminalSubmit.performed -= instance.OnTerminalSubmit;
+            @TerminalSubmit.canceled -= instance.OnTerminalSubmit;
         }
 
         /// <summary>
@@ -508,5 +616,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TerminalNavigate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTerminalNavigate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TerminalSubmit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTerminalSubmit(InputAction.CallbackContext context);
     }
 }

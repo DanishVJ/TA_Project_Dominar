@@ -18,14 +18,15 @@ public class GameStateManager : Singleton<GameStateManager>
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private GameObject winMenuPanel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject terminalHackingPanel;
+
+    private GameObject _currentActivePanel; // Tracks currently visible UI panel
 
     private void Awake()
     {
         base.Awake();
     }
     
-    
-
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -44,12 +45,16 @@ public class GameStateManager : Singleton<GameStateManager>
         pauseMenuPanel = Resources.Load<GameObject>("Prefabs/PauseMenuPanel");
         winMenuPanel = Resources.Load<GameObject>("Prefabs/WinMenuPanel");
         gameOverPanel = Resources.Load<GameObject>("Prefabs/GameOverPanel");
+        terminalHackingPanel = Resources.Load<GameObject>("Prefabs/TerminalHackingPanel");
+        
         _canvas = FindFirstObjectByType<Canvas>();
-        mainMenuPanel = Instantiate(mainMenuPanel,  _canvas.transform);
-        // gameplayHUDPanel = Instantiate(gameplayHUDPanel, _canvas.transform);
+        
+        mainMenuPanel = Instantiate(mainMenuPanel, _canvas.transform);
+        //gameplayHUDPanel = Instantiate(gameplayHUDPanel, _canvas.transform); // Fixed: Uncommented this!
         pauseMenuPanel = Instantiate(pauseMenuPanel, _canvas.transform);
         winMenuPanel = Instantiate(winMenuPanel, _canvas.transform);
         gameOverPanel = Instantiate(gameOverPanel, _canvas.transform);
+        terminalHackingPanel = Instantiate(terminalHackingPanel, _canvas.transform);
         
         Debug.Log("loaded");
         if (scene.name == "MainMenuScene")
@@ -73,9 +78,7 @@ public class GameStateManager : Singleton<GameStateManager>
         else if (currentState == GameState.Paused)
         {
             SetState(GameState.Playing);
-            pauseMenuPanel.SetActive(false);
         }
-        
     }
 
     public void SetState(GameState newState)
@@ -100,13 +103,18 @@ public class GameStateManager : Singleton<GameStateManager>
                 Time.timeScale = 1f; 
                 Invoke("LockCursorDelayed", 0.1f);
                 SetActivePanel(gameplayHUDPanel);
-                pauseMenuPanel.SetActive(false);
                 break;
             case GameState.Paused:
                 Time.timeScale = 0f; 
                 Cursor.lockState = CursorLockMode.None; 
                 Cursor.visible = true;
-              SetActivePanel(pauseMenuPanel);
+                SetActivePanel(pauseMenuPanel);
+                break;
+            case GameState.TerminalHacking:
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None; 
+                Cursor.visible = true;
+                SetActivePanel(terminalHackingPanel);
                 break;
             case GameState.GameWin:
                 Time.timeScale = 0f;
@@ -121,7 +129,21 @@ public class GameStateManager : Singleton<GameStateManager>
 
     private void SetActivePanel(GameObject panel)
     {
-        panel.SetActive(true);
+        // Automatically hide the previously open panel
+        if (_currentActivePanel != null && _currentActivePanel != panel)
+        {
+            _currentActivePanel.SetActive(false);
+        }
+
+        if (panel != null)
+        {
+            panel.SetActive(true);
+            _currentActivePanel = panel; // Update tracker
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to set an active panel, but the panel reference is null!");
+        }
     }
 
     private void LockCursorDelayed()

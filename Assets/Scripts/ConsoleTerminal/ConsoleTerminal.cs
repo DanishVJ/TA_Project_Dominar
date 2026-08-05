@@ -11,7 +11,13 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("Terminal interacted successfully!");
+        Debug.Log("Terminal activated successfully!");
+        
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetState(GameState.TerminalHacking);
+        }
+        
         OnTerminalActivated?.Invoke();
     }
 
