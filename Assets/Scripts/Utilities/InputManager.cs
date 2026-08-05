@@ -6,6 +6,9 @@ public class InputManager : Singleton<InputManager>
 {
     private PlayerControls _controls;
     private PlayerController _playerController;
+    
+    public static event Action<Vector2> OnTerminalNavigate;
+    public static event Action OnTerminalSubmit;
 
     protected override void Awake()
     {
@@ -19,26 +22,36 @@ public class InputManager : Singleton<InputManager>
     {
         _controls.Player.Move.performed += OnMove;
         _controls.Player.Move.canceled += OnMove;
-        
+
         _controls.Player.Jump.performed += OnJump;
-        
+
         _controls.Player.Pause.performed += OnPauseAction;
 
         _controls.Player.Interact.performed += OnInteractAction;
+        
+        _controls.Player.TerminalNavigate.performed += OnTerminalNavigateAction;
+        _controls.Player.TerminalNavigate.canceled += OnTerminalNavigateAction;
+
+        _controls.Player.TerminalSubmit.performed += OnTerminalSubmitAction;
     }
-    
+
     private void OnDisable()
     {
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Move.canceled -= OnMove;
-        
+
         _controls.Player.Jump.performed -= OnJump;
-        
+
         _controls.Player.Pause.performed -= OnPauseAction;
 
         _controls.Player.Interact.performed -= OnInteractAction;
+        
+        _controls.Player.TerminalNavigate.performed -= OnTerminalNavigateAction;
+        _controls.Player.TerminalNavigate.canceled -= OnTerminalNavigateAction;
+
+        _controls.Player.TerminalSubmit.performed -= OnTerminalSubmitAction;
     }
-    
+
     public void OnMove(InputAction.CallbackContext context)
     {
         _playerController.moveInput = context.ReadValue<Vector2>();
@@ -58,15 +71,15 @@ public class InputManager : Singleton<InputManager>
     {
         _playerController.OnInteract();
     }
-
-    void Start()
+    
+    public void OnTerminalNavigateAction(InputAction.CallbackContext context)
     {
-        
+        OnTerminalNavigate?.Invoke(context.ReadValue<Vector2>());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnTerminalSubmitAction(InputAction.CallbackContext context)
     {
-        
+        OnTerminalSubmit?.Invoke();
     }
+    
 }
