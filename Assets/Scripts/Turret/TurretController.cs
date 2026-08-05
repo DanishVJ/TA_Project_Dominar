@@ -6,7 +6,7 @@ public class TurretController : MonoBehaviour
     
     public TurretPatrolState PatrolState { get; private set; }
     public TurretTrackState TrackState { get; private set; }
-    public TurretAttackState AttackState { get; private set; } // Added Attack State
+    public TurretAttackState AttackState { get; private set; }
     
     [Header("Visual Indicators")]
     [SerializeField] private Light turretSpotLight;              // Drag your spotlight here in Unity!
@@ -18,10 +18,10 @@ public class TurretController : MonoBehaviour
     [SerializeField] private TurretSensor turretSensor;
 
     [Header("Weapon Settings")]
-    [SerializeField] private GameObject projectilePrefab;       // Assign a simple bullet prefab here
-    [SerializeField] private Transform firePoint;                // Assign where the bullet spawns from
-    [SerializeField] private float fireRate = 1.0f;              // Seconds between shots
-    [SerializeField] private float projectileSpeed = 20f;        // Bullet speed
+    [SerializeField] private GameObject projectilePrefab;       
+    [SerializeField] private Transform firePoint;                
+    [SerializeField] private float fireRate = 1.0f;              
+    [SerializeField] private float projectileSpeed = 20f;        
 
     [Header("Strategy Pattern (Scriptable Objects)")]
     [SerializeField] private ProjectileAttackStrategy projectileStrategy;
@@ -35,7 +35,7 @@ public class TurretController : MonoBehaviour
 
     [Header("Track Settings - Speed Adjustments")]
     [Tooltip("How fast the turret slides up and down when tracking the player.")]
-    [SerializeField] private float trackSlideSpeed = 4f; // Snappy speed for active tracking!
+    [SerializeField] private float trackSlideSpeed = 4f; 
 
     [Header("Patrol Settings - Rotations")]
     [SerializeField] private float targetPitchUpAngle = -25f;
@@ -48,7 +48,13 @@ public class TurretController : MonoBehaviour
     [SerializeField] private float maxTrackingPitchUp = 30f;
     [SerializeField] private float maxTrackingPitchDown = 15f;
     
-    // Strategy runtime variable
+    [Header("Shutdown Settings")]
+    [SerializeField] private AudioSource turretAudioSource;
+    [SerializeField] private AudioClip buzzerClip;
+    [SerializeField] private AudioClip shutdownClip;
+    
+    private bool isDeactivated = false;
+    
     private IAttackStrategy _activeStrategy;
 
     public Transform SliderPivot => sliderPivot;
@@ -57,7 +63,7 @@ public class TurretController : MonoBehaviour
     public TurretSensor Sensor => turretSensor;
     public float SlideStepDistance => slideStepDistance;
     public float SlideSpeed => slideSpeed;
-    public float TrackSlideSpeed => trackSlideSpeed; // Getter for TrackState to read
+    public float TrackSlideSpeed => trackSlideSpeed; 
     public float TargetPitchUpAngle => targetPitchUpAngle;
     public float TargetPitchDownAngle => targetPitchDownAngle;
     public float TargetYawRightAngle => targetYawRightAngle;
@@ -66,9 +72,8 @@ public class TurretController : MonoBehaviour
     public float MaxTrackingPitchUp => maxTrackingPitchUp;
     public float MaxTrackingPitchDown => maxTrackingPitchDown;
 
-    // Getters for Weapon Settings
     public float FireRate => fireRate;
-    public Transform FirePoint => firePoint; // <-- CapitalIZED 'F' to prevent name collisions!
+    public Transform FirePoint => firePoint; 
     
     public Quaternion AbsoluteBaseShooterRotation { get; private set; }
     public Quaternion AbsoluteBaseRotatorRotation { get; private set; }
@@ -79,7 +84,7 @@ public class TurretController : MonoBehaviour
 
         PatrolState = new TurretPatrolState(this);
         TrackState = new TurretTrackState(this);
-        AttackState = new TurretAttackState(this); // Initialized Attack State
+        AttackState = new TurretAttackState(this); 
     }
 
     private void Start()
@@ -87,18 +92,17 @@ public class TurretController : MonoBehaviour
         AbsoluteBaseShooterRotation = shooterPivot.localRotation;
         AbsoluteBaseRotatorRotation = rotatorPivot.localRotation;
         
-        // Default strategy on startup
         _activeStrategy = projectileStrategy;
 
         stateMachine.Initialize(PatrolState);
-        UpdateLightColor(PatrolState); // Set initial green color on startup
+        UpdateLightColor(PatrolState); 
     }
 
     private void Update()
     {
-        stateMachine.ExecuteActiveState();
+        if (isDeactivated) return; 
 
-        // Dynamically choose the strategy based on player distance
+        stateMachine.ExecuteActiveState();
         EvaluateStrategy();
     }
 
@@ -129,13 +133,11 @@ public class TurretController : MonoBehaviour
     public void SwitchState(IState newState)
     {
         stateMachine.ChangeState(newState);
-        UpdateLightColor(newState); // Automatically swap colors whenever a state changes!
+        UpdateLightColor(newState); 
     }
 
-    // Handles the traffic light logic based on the state machine
     private void UpdateLightColor(IState state)
     {
-        // Find the light controller component on this turret
         TurretLightController lightController = GetComponentInChildren<TurretLightController>();
         if (lightController == null) return;
 
@@ -153,7 +155,6 @@ public class TurretController : MonoBehaviour
         }
     }
 
-    // Instantiates the projectile and shoots it forward using active Strategy
     public void Shoot()
     {
         if (_activeStrategy != null)
@@ -169,5 +170,37 @@ public class TurretController : MonoBehaviour
         {
             PatrolState.SetVerticalDirection(boundary.DirectionToSet);
         }
+    }
+    
+    public void DisableTurret()
+    {
+        if (isDeactivated) return;
+        isDeactivated = true;
+
+        if (turretAudioSource != null)
+        {
+            if (buzzerClip != null) turretAudioSource.PlayOneShot(buzzerClip);
+            if (shutdownClip != null) turretAudioSource.PlayDelayed(buzzerClip != null ? buzzerClip.length : 0f);
+        }
+
+        if (stateMachine.CurrentState != null)
+        {
+            stateMachine.CurrentState.Exit();
+        }
+        this.enabled = false; 
+        if (turretSensor != null) turretSensor.enabled = false; 
+
+        if (turretSpotLight != null)
+        {
+            turretSpotLight.enabled = false;
+        }
+    
+        TurretLightController lightController = GetComponentInChildren<TurretLightController>();
+        if (lightController != null)
+        {
+            lightController.enabled = false;
+        }
+
+        Debug.Log("[TURRET] Completely deactivated via terminal hacking.");
     }
 }

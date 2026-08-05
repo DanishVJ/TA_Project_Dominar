@@ -18,6 +18,9 @@ public class TerminalHackingController : MonoBehaviour
     [Header("Winning Solution")]
     [SerializeField] private int winningLeftIndex = 2;
     [SerializeField] private int winningRightIndex = 5;
+    
+    [Header("Turret Target")]
+    [SerializeField] private TurretController targetTurret;
 
     void OnEnable()
     {
@@ -96,14 +99,17 @@ public class TerminalHackingController : MonoBehaviour
         if (leftIndex == winningLeftIndex && rightIndex == winningRightIndex)
         {
             Debug.Log("Terminal Hacked Successfully!");
-            // Add success rewards / triggers here if needed
+        
+            if (targetTurret != null)
+            {
+                targetTurret.DisableTurret();
+            }
         }
         else
         {
             Debug.Log("Incorrect combination!");
         }
 
-        // Always close the terminal on Enter press (right or wrong)
         CloseTerminal();
     }
 
