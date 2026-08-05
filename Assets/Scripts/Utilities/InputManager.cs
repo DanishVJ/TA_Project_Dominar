@@ -33,6 +33,8 @@ public class InputManager : Singleton<InputManager>
         _controls.Player.TerminalNavigate.canceled += OnTerminalNavigateAction;
 
         _controls.Player.TerminalSubmit.performed += OnTerminalSubmitAction;
+        
+        //_controls.SaveAndLoad.SaveGame.performed += context => SaveAndLoadManager.Instance.SaveGame();
     }
 
     private void OnDisable()
