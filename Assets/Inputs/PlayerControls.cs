@@ -323,6 +323,54 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SaveAndLoad"",
+            ""id"": ""242965ec-53e6-435d-aae5-d2292266e41e"",
+            ""actions"": [
+                {
+                    ""name"": ""SaveGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""74a8cd0c-a5ee-480a-b669-dbc98cb3c9d1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LoadGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""32226385-831f-4461-905e-8e3a58077229"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""160acea0-d2c8-4b65-a76f-ae37fe845956"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SaveGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3327d99b-e0bd-4aed-bdfe-45352cc91fe8"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LoadGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -336,11 +384,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_TerminalNavigate = m_Player.FindAction("TerminalNavigate", throwIfNotFound: true);
         m_Player_TerminalSubmit = m_Player.FindAction("TerminalSubmit", throwIfNotFound: true);
+        // SaveAndLoad
+        m_SaveAndLoad = asset.FindActionMap("SaveAndLoad", throwIfNotFound: true);
+        m_SaveAndLoad_SaveGame = m_SaveAndLoad.FindAction("SaveGame", throwIfNotFound: true);
+        m_SaveAndLoad_LoadGame = m_SaveAndLoad.FindAction("LoadGame", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerControls.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_SaveAndLoad.enabled, "This will cause a leak and performance issues, PlayerControls.SaveAndLoad.Disable() has not been called.");
     }
 
     /// <summary>
@@ -574,6 +627,113 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PlayerActions" /> instance referencing this action map.
     /// </summary>
     public PlayerActions @Player => new PlayerActions(this);
+
+    // SaveAndLoad
+    private readonly InputActionMap m_SaveAndLoad;
+    private List<ISaveAndLoadActions> m_SaveAndLoadActionsCallbackInterfaces = new List<ISaveAndLoadActions>();
+    private readonly InputAction m_SaveAndLoad_SaveGame;
+    private readonly InputAction m_SaveAndLoad_LoadGame;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "SaveAndLoad".
+    /// </summary>
+    public struct SaveAndLoadActions
+    {
+        private @PlayerControls m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public SaveAndLoadActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "SaveAndLoad/SaveGame".
+        /// </summary>
+        public InputAction @SaveGame => m_Wrapper.m_SaveAndLoad_SaveGame;
+        /// <summary>
+        /// Provides access to the underlying input action "SaveAndLoad/LoadGame".
+        /// </summary>
+        public InputAction @LoadGame => m_Wrapper.m_SaveAndLoad_LoadGame;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_SaveAndLoad; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="SaveAndLoadActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(SaveAndLoadActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="SaveAndLoadActions" />
+        public void AddCallbacks(ISaveAndLoadActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SaveAndLoadActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SaveAndLoadActionsCallbackInterfaces.Add(instance);
+            @SaveGame.started += instance.OnSaveGame;
+            @SaveGame.performed += instance.OnSaveGame;
+            @SaveGame.canceled += instance.OnSaveGame;
+            @LoadGame.started += instance.OnLoadGame;
+            @LoadGame.performed += instance.OnLoadGame;
+            @LoadGame.canceled += instance.OnLoadGame;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="SaveAndLoadActions" />
+        private void UnregisterCallbacks(ISaveAndLoadActions instance)
+        {
+            @SaveGame.started -= instance.OnSaveGame;
+            @SaveGame.performed -= instance.OnSaveGame;
+            @SaveGame.canceled -= instance.OnSaveGame;
+            @LoadGame.started -= instance.OnLoadGame;
+            @LoadGame.performed -= instance.OnLoadGame;
+            @LoadGame.canceled -= instance.OnLoadGame;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="SaveAndLoadActions.UnregisterCallbacks(ISaveAndLoadActions)" />.
+        /// </summary>
+        /// <seealso cref="SaveAndLoadActions.UnregisterCallbacks(ISaveAndLoadActions)" />
+        public void RemoveCallbacks(ISaveAndLoadActions instance)
+        {
+            if (m_Wrapper.m_SaveAndLoadActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="SaveAndLoadActions.AddCallbacks(ISaveAndLoadActions)" />
+        /// <seealso cref="SaveAndLoadActions.RemoveCallbacks(ISaveAndLoadActions)" />
+        /// <seealso cref="SaveAndLoadActions.UnregisterCallbacks(ISaveAndLoadActions)" />
+        public void SetCallbacks(ISaveAndLoadActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SaveAndLoadActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SaveAndLoadActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="SaveAndLoadActions" /> instance referencing this action map.
+    /// </summary>
+    public SaveAndLoadActions @SaveAndLoad => new SaveAndLoadActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
     /// </summary>
@@ -630,5 +790,27 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTerminalSubmit(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "SaveAndLoad" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="SaveAndLoadActions.AddCallbacks(ISaveAndLoadActions)" />
+    /// <seealso cref="SaveAndLoadActions.RemoveCallbacks(ISaveAndLoadActions)" />
+    public interface ISaveAndLoadActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "SaveGame" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSaveGame(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LoadGame" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLoadGame(InputAction.CallbackContext context);
     }
 }

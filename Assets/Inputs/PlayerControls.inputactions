@@ -237,6 +237,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "SaveAndLoad",
+            "id": "242965ec-53e6-435d-aae5-d2292266e41e",
+            "actions": [
+                {
+                    "name": "SaveGame",
+                    "type": "Button",
+                    "id": "74a8cd0c-a5ee-480a-b669-dbc98cb3c9d1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LoadGame",
+                    "type": "Button",
+                    "id": "32226385-831f-4461-905e-8e3a58077229",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "160acea0-d2c8-4b65-a76f-ae37fe845956",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaveGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3327d99b-e0bd-4aed-bdfe-45352cc91fe8",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LoadGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
