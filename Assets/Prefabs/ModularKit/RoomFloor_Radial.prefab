@@ -177,6 +177,14 @@ PrefabInstance:
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: m_StaticShadowCaster
       value: 1
       objectReference: {fileID: 0}
