@@ -81,6 +81,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2623525324891911224, guid: 1b5d2e7a29d236d4aaf6720942935e61, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2623525324891911224, guid: 1b5d2e7a29d236d4aaf6720942935e61, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2623525324891911224, guid: 1b5d2e7a29d236d4aaf6720942935e61, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3bde06459cb71e443a9d00b01774f9d7, type: 2}
