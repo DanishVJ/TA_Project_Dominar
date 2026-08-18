@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 235d53df8b66d594bababe337129c0f7, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 6e757fe610db81a479282657ce458d38, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 61e3937421271e9409be8f5ab255c1f0, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -240,6 +240,14 @@ PrefabInstance:
     - target: {fileID: 6181914829775359911, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
       propertyPath: m_Name
       value: Turret_Scripted
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
+      propertyPath: m_Range
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
+      propertyPath: m_Intensity
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
       propertyPath: m_Lightmapping
@@ -12236,8 +12244,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.740566, g: 0.7766659, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 200
+  m_Intensity: 5
+  m_Range: 50
   m_SpotAngle: 120
   m_InnerSpotAngle: 100
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -12552,8 +12560,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.740566, g: 0.7766659, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 200
+  m_Intensity: 5
+  m_Range: 50
   m_SpotAngle: 120
   m_InnerSpotAngle: 100
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -16907,6 +16915,14 @@ PrefabInstance:
     - target: {fileID: 6181914829775359911, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
       propertyPath: m_Name
       value: Turret_Scripted (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
+      propertyPath: m_Range
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
+      propertyPath: m_Intensity
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
       propertyPath: m_Lightmapping
@@ -23296,8 +23312,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.740566, g: 0.7766659, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 200
+  m_Intensity: 5
+  m_Range: 50
   m_SpotAngle: 120
   m_InnerSpotAngle: 100
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -25299,8 +25315,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.740566, g: 0.7766659, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 200
+  m_Intensity: 5
+  m_Range: 50
   m_SpotAngle: 120
   m_InnerSpotAngle: 100
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -44600,25 +44616,25 @@ MonoBehaviour:
   lowestSubdivLevelOverride: 0
   highestSubdivLevelOverride: 3
   overridesSubdivLevels: 0
-  mightNeedRebaking: 1
+  mightNeedRebaking: 0
   cachedTransform:
-    e00: 0
+    e00: 1
     e01: 0
     e02: 0
-    e03: 0
+    e03: -0
     e10: 0
-    e11: 0
+    e11: 1
     e12: 0
-    e13: 0
+    e13: -20.058334
     e20: 0
     e21: 0
-    e22: 0
-    e23: 0
+    e22: 1
+    e23: -0
     e30: 0
     e31: 0
     e32: 0
-    e33: 0
-  cachedHashCode: 0
+    e33: 1
+  cachedHashCode: -500027468
   fillEmptySpaces: 0
 --- !u!4 &1542469785
 Transform:
@@ -51416,8 +51432,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.740566, g: 0.7766659, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 200
+  m_Intensity: 5
+  m_Range: 50
   m_SpotAngle: 120
   m_InnerSpotAngle: 100
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -54025,8 +54041,12 @@ PrefabInstance:
       value: Turret_Scripted (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
+      propertyPath: m_Range
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
       propertyPath: m_Intensity
-      value: 300
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6331919136616963305, guid: f4c438fd678a1334089fe30fa449a639, type: 3}
       propertyPath: m_Lightmapping
@@ -54864,8 +54884,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.740566, g: 0.7766659, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 200
+  m_Intensity: 5
+  m_Range: 50
   m_SpotAngle: 120
   m_InnerSpotAngle: 100
   m_CookieSize2D: {x: 0.5, y: 0.5}
