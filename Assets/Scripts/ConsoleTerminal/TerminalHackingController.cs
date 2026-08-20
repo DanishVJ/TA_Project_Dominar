@@ -19,11 +19,14 @@ public class TerminalHackingController : MonoBehaviour
     [SerializeField] private int winningLeftIndex = 2;
     [SerializeField] private int winningRightIndex = 5;
     
-    [Header("Turret Target")]
-    [SerializeField] private TurretController targetTurret;
+    private TurretController targetTurret;
+    private ConsoleTerminal activeTerminal;
 
     void OnEnable()
     {
+        leftIndex = 0;
+        rightIndex = 0;
+        
         activeSlot = 0;
         UpdateUI();
         
@@ -43,7 +46,6 @@ public class TerminalHackingController : MonoBehaviour
         if (GameStateManager.Instance == null || GameStateManager.Instance.CurrentState != GameState.TerminalHacking)
             return;
 
-        // Horizontal input (Left/Right or A/D) switches active slots
         // Horizontal input (Left/Right or A/D) cycles through active slots endlessly
         if (Mathf.Abs(moveInput.x) > 0.5f)
         {
@@ -108,6 +110,12 @@ public class TerminalHackingController : MonoBehaviour
         else
         {
             Debug.Log("Incorrect combination!");
+            
+            // Play the error sound directly from the physical terminal object in the world
+            if (activeTerminal != null)
+            {
+                activeTerminal.PlayIncorrectSound();
+            }
         }
 
         CloseTerminal();
@@ -119,5 +127,23 @@ public class TerminalHackingController : MonoBehaviour
         {
             GameStateManager.Instance.SetState(GameState.Playing);
         }
+    }
+    
+    public void SetTargetTurret(TurretController turret)
+    {
+        targetTurret = turret;
+        Debug.Log($"[HACKING] Target turret successfully set to: {turret.gameObject.name}");
+    }
+
+    public void SetActiveTerminal(ConsoleTerminal terminal)
+    {
+        activeTerminal = terminal;
+    }
+    
+    public void SetWinningCombination(int left, int right)
+    {
+        winningLeftIndex = left;
+        winningRightIndex = right;
+        Debug.Log($"[HACKING] Winning combination updated to: {left} and {right}");
     }
 }

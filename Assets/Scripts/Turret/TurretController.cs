@@ -50,7 +50,7 @@ public class TurretController : MonoBehaviour
     
     [Header("Shutdown Settings")]
     [SerializeField] private AudioSource turretAudioSource;
-    [SerializeField] private AudioClip buzzerClip;
+    [SerializeField] private AudioClip successClip;
     [SerializeField] private AudioClip shutdownClip;
     
     private bool isDeactivated = false;
@@ -179,8 +179,16 @@ public class TurretController : MonoBehaviour
 
         if (turretAudioSource != null)
         {
-            if (buzzerClip != null) turretAudioSource.PlayOneShot(buzzerClip);
-            if (shutdownClip != null) turretAudioSource.PlayDelayed(buzzerClip != null ? buzzerClip.length : 0f);
+            if (successClip != null)
+            {
+                turretAudioSource.PlayOneShot(successClip);
+            }
+            
+            if (shutdownClip != null)
+            {
+                turretAudioSource.clip = shutdownClip;
+                turretAudioSource.PlayDelayed(1.0f);
+            }
         }
 
         if (stateMachine.CurrentState != null)
@@ -190,9 +198,10 @@ public class TurretController : MonoBehaviour
         this.enabled = false; 
         if (turretSensor != null) turretSensor.enabled = false; 
 
-        if (turretSpotLight != null)
+        Light foundLight = GetComponentInChildren<Light>();
+        if (foundLight != null)
         {
-            turretSpotLight.enabled = false;
+            foundLight.gameObject.SetActive(false);
         }
     
         TurretLightController lightController = GetComponentInChildren<TurretLightController>();

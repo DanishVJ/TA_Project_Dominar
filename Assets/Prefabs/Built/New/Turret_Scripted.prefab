@@ -1008,7 +1008,7 @@ MonoBehaviour:
   maxTrackingPitchUp: 30
   maxTrackingPitchDown: 15
   turretAudioSource: {fileID: 8665106019499085736}
-  buzzerClip: {fileID: 8300000, guid: c707e325241d56647a678e35c8c9861b, type: 3}
+  successClip: {fileID: 8300000, guid: c707e325241d56647a678e35c8c9861b, type: 3}
   shutdownClip: {fileID: 8300000, guid: e64d270e4765ef743a6794e7ec88f919, type: 3}
 --- !u!54 &7629779223078528940
 Rigidbody:
