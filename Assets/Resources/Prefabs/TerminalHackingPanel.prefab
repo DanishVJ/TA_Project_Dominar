@@ -1323,19 +1323,18 @@ MonoBehaviour:
   leftSlotImage: {fileID: 8727837957531233093}
   rightSlotImage: {fileID: 7265156374017381770}
   availableSprites:
-  - {fileID: 21300000, guid: d427d4e4a836936429934dafeb5e6c12, type: 3}
-  - {fileID: 21300000, guid: 672361446c0faa54d831d84bedf5823d, type: 3}
-  - {fileID: 21300000, guid: 19c2506cb84fef04a845dd0f81f2acdc, type: 3}
-  - {fileID: 21300000, guid: 97f737c69ccc70c40be7fa35223ac8d0, type: 3}
-  - {fileID: 21300000, guid: 2e4472a8dcf338d47911d915739270aa, type: 3}
-  - {fileID: 21300000, guid: 76adbb8ee3a8da4479a598087d1536ef, type: 3}
-  - {fileID: 21300000, guid: a5349c4e9d02bed4fba08bd69fe53a40, type: 3}
-  - {fileID: 21300000, guid: 37e4a5224dbd2e940a3ed41d3ffc4a39, type: 3}
-  - {fileID: 21300000, guid: e7a081159b4c1a94cbbcbfacda8a23e0, type: 3}
-  - {fileID: 21300000, guid: 60c5a0771b1d2b741b0364e431472773, type: 3}
+  - {fileID: 21300000, guid: 41ea442ba67e15a4c8bb4b8204d7f5a7, type: 3}
+  - {fileID: 21300000, guid: de17520d969d6324a8f3734a0d7c18f1, type: 3}
+  - {fileID: 21300000, guid: 25195c4705094ff46a80cb600702c659, type: 3}
+  - {fileID: 21300000, guid: 86b55f796bd565f4dab43663bd7cf559, type: 3}
+  - {fileID: 21300000, guid: 2730ca007b301a047b5361f733052e31, type: 3}
+  - {fileID: 21300000, guid: ac205a02d214faf45a020ab934c3ead8, type: 3}
+  - {fileID: 21300000, guid: c62f6c3e75ac616449ec4385a4a171d9, type: 3}
+  - {fileID: 21300000, guid: 4a7991caf42242c45ba8918309a1a5f6, type: 3}
+  - {fileID: 21300000, guid: 9743dabf997bfbf4ebc4ed43fcf62bee, type: 3}
+  - {fileID: 21300000, guid: 5e7402c171e7ffa4ea192daa5d2a82c5, type: 3}
   winningLeftIndex: 1
   winningRightIndex: 2
-  incorrectClip: {fileID: 8300000, guid: 5dea47f7cbdb9a748867c80be56b99b4, type: 3}
 --- !u!1 &6999931271254365881
 GameObject:
   m_ObjectHideFlags: 0
