@@ -141,6 +141,10 @@ PrefabInstance:
       value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: -361496572488733739, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -361496572488733739, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3bde06459cb71e443a9d00b01774f9d7, type: 2}
@@ -171,6 +175,18 @@ PrefabInstance:
     - target: {fileID: 4310329244192907079, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7937458383687764805, guid: e92728f5eb1eb854482dd72b8ebf3a91, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
