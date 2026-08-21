@@ -1631,7 +1631,7 @@ Transform:
   m_GameObject: {fileID: 43561665}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10756741, y: -0.6988772, z: 0.10756741, w: 0.69887716}
-  m_LocalPosition: {x: -23.699306, y: 6.596039, z: 50.797157}
+  m_LocalPosition: {x: 63.35569, y: -5.763961, z: 72.38815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41308,7 +41308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65b48d3fdee73b4e8427ee385287d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurretManager
-  totalTurrets: 1
+  totalTurrets: 3
 --- !u!1001 &1385136132
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57009,6 +57009,11 @@ Transform:
   - {fileID: 633661865}
   m_Father: {fileID: 985145135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1925629040 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7425344018895114115, guid: 659141790b05da94ca1c476536565cbd, type: 3}
+  m_PrefabInstance: {fileID: 5972369696072637284}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1928379678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60384,15 +60389,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3146093311594126328, guid: dfa4c956b11f014448f57b982cf8b1fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.699306
+      value: 63.35569
       objectReference: {fileID: 0}
     - target: {fileID: 3146093311594126328, guid: dfa4c956b11f014448f57b982cf8b1fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.596039
+      value: -5.763961
       objectReference: {fileID: 0}
     - target: {fileID: 3146093311594126328, guid: dfa4c956b11f014448f57b982cf8b1fe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50.797157
+      value: 72.38815
       objectReference: {fileID: 0}
     - target: {fileID: 3146093311594126328, guid: dfa4c956b11f014448f57b982cf8b1fe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -63649,6 +63654,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 853970438436334107, guid: 659141790b05da94ca1c476536565cbd, type: 3}
+      propertyPath: smokeSpawnPoint
+      value: 
+      objectReference: {fileID: 1925629040}
+    - target: {fileID: 853970438436334107, guid: 659141790b05da94ca1c476536565cbd, type: 3}
+      propertyPath: smokeParticlePrefab
+      value: 
+      objectReference: {fileID: 9030484206562008319, guid: 816176d4a83118449ac6712c124bf7ac, type: 3}
     - target: {fileID: 4753524262392298392, guid: 659141790b05da94ca1c476536565cbd, type: 3}
       propertyPath: m_Name
       value: Player
@@ -63663,15 +63676,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7008489134145334347, guid: 659141790b05da94ca1c476536565cbd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.925
+      value: 75.13
       objectReference: {fileID: 0}
     - target: {fileID: 7008489134145334347, guid: 659141790b05da94ca1c476536565cbd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.305
+      value: 0.945
       objectReference: {fileID: 0}
     - target: {fileID: 7008489134145334347, guid: 659141790b05da94ca1c476536565cbd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.759
+      value: 33.35
       objectReference: {fileID: 0}
     - target: {fileID: 7008489134145334347, guid: 659141790b05da94ca1c476536565cbd, type: 3}
       propertyPath: m_LocalRotation.w

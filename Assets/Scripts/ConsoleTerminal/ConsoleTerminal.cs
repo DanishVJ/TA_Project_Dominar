@@ -52,7 +52,7 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
                 PlaySuccessSound();
 
                 HUDManager hud = FindObjectOfType<HUDManager>();
-                if (hud != null) hud.DisplayTemporaryMessage("Airlocks Open!");
+                if (hud != null) hud.DisplayTemporaryMessage("Escape Doors Open!");
 
                 TriggerEscapeSequence();
                 return;

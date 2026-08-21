@@ -7,6 +7,10 @@ public class PlayerHealth : MonoBehaviour
     private float currentHealth;
     private bool isDead = false; // Prevents the death sequence from running multiple times
 
+    [Header("Damage Effects")]
+    [SerializeField] private GameObject smokeParticlePrefab; // Drag your smoke prefab here in Inspector
+    [SerializeField] private Transform smokeSpawnPoint;      // Where on the player the smoke appears (e.g., chest/spine)
+
     // Events for UI and other systems
     public static event Action<float, float> OnHealthChanged; // Passes (currentHealth, maxHealth)
     public static event Action OnPlayerDied;
@@ -27,12 +31,27 @@ public class PlayerHealth : MonoBehaviour
         
         Debug.Log($"[PLAYER] Hit! Health remaining: {currentHealth}/{maxHealth}");
 
+        // Spawn damage smoke effect
+        TriggerDamageSmoke();
+
         // Tell listeners (like your HUD) that health changed
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
         {
             Die();
+        }
+    }
+
+    private void TriggerDamageSmoke()
+    {
+        if (smokeParticlePrefab != null)
+        {
+            Transform spawnParent = smokeSpawnPoint != null ? smokeSpawnPoint : transform;
+            GameObject smoke = Instantiate(smokeParticlePrefab, spawnParent.position, spawnParent.rotation, spawnParent);
+            
+            // Destroy the smoke effect after a few seconds so it doesn't clutter the hierarchy
+            Destroy(smoke, 3f);
         }
     }
 
