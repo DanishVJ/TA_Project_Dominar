@@ -118,10 +118,14 @@ public class GameStateManager : Singleton<GameStateManager>
                 break;
             case GameState.GameWin:
                 Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None; 
+                Cursor.visible = true;
                 SetActivePanel(winMenuPanel);
                 break;
             case GameState.GameOver:
                 Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None; 
+                Cursor.visible = true;
                 SetActivePanel(gameOverPanel);
                 break;
         }

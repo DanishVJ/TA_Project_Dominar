@@ -136,6 +136,12 @@ public class TerminalHackingController : MonoBehaviour
             {
                 targetTurret.DisableTurret();
             }
+
+            // If this is the escape terminal, trigger the hangar door opening sequence
+            if (activeTerminal != null && activeTerminal.IsExitTerminal)
+            {
+                activeTerminal.TriggerEscapeSequence();
+            }
         }
         else
         {

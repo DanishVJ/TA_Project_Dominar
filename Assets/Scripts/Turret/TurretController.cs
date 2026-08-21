@@ -176,6 +176,8 @@ public class TurretController : MonoBehaviour
     {
         if (isDeactivated) return;
         isDeactivated = true;
+        
+        if (TurretManager.Instance != null) TurretManager.Instance.TurretDeactivated();
 
         if (turretAudioSource != null)
         {

@@ -16,12 +16,33 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
     [Header("Audio Feedback")]
     [SerializeField] private AudioSource terminalAudioSource;
     [SerializeField] private AudioClip incorrectClip;
+
+    [Header("Escape Terminal Settings")]
+    [SerializeField] private bool isExitTerminal = false;
+    public bool IsExitTerminal => isExitTerminal;
+
+    [Header("Escape Environment Swap")]
+    [SerializeField] private GameObject[] solidDomePanels;     // Drag multiple solid dome panels here
+    [SerializeField] private GameObject[] doorwayDomePanels;   // Drag multiple doorway dome variants here
+    [SerializeField] private GameObject exitPointLight;     // Drag point light / parent light object here
+    [SerializeField] private GameObject exitTriggerVolume;  // Drag win trigger box / parent object here
     
     // Event that notifies listeners when the terminal is opened
     public static event Action OnTerminalActivated;
 
     public void Interact()
     {
+        // Check if this is the exit terminal and if turrets are still active
+        if (isExitTerminal)
+        {
+            if (TurretManager.Instance != null && !TurretManager.Instance.AreAllTurretsDisabled())
+            {
+                Debug.Log("[TERMINAL] Access Denied: Active turrets remain online.");
+                PlayIncorrectSound();
+                return; // Stop here, do not open hacking UI
+            }
+        }
+
         Debug.Log("Terminal activated successfully!");
     
         // Find the hacking controller (including inactive/instantiated clones)
@@ -31,7 +52,7 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
             // Pass the terminal reference so it can trigger audio feedback
             hackingControllers[0].SetActiveTerminal(this);
 
-            // Pass the turret reference
+            // Pass the turret reference (if assigned)
             if (associatedTurret != null)
             {
                 hackingControllers[0].SetTargetTurret(associatedTurret);
@@ -64,5 +85,31 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
         {
             terminalAudioSource.PlayOneShot(incorrectClip);
         }
+    }
+
+    public void TriggerEscapeSequence()
+    {
+        // Turn off all solid dome panels
+        if (solidDomePanels != null)
+        {
+            foreach (GameObject panel in solidDomePanels)
+            {
+                if (panel != null) panel.SetActive(false);
+            }
+        }
+
+        // Turn on all doorway dome panels
+        if (doorwayDomePanels != null)
+        {
+            foreach (GameObject panel in doorwayDomePanels)
+            {
+                if (panel != null) panel.SetActive(true);
+            }
+        }
+
+        if (exitPointLight != null) exitPointLight.SetActive(true);
+        if (exitTriggerVolume != null) exitTriggerVolume.SetActive(true);
+        
+        Debug.Log("[ESCAPE] Hangar airlocks opened! Escape routes active.");
     }
 }
