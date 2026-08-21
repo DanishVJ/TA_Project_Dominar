@@ -890,6 +890,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6253000646258034511, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8665106019499085736}
+    - targetCorrespondingSourceObject: {fileID: 6253000646258034511, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1490231015338615493}
     - targetCorrespondingSourceObject: {fileID: 3854305844314546446, guid: 6b29bb80d8125014a9661f43463772c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5749347743625627157}
@@ -1134,3 +1137,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!164 &1490231015338615493
+AudioReverbFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729233997749606043}
+  m_Enabled: 1
+  m_DryLevel: 0
+  m_Room: -1000
+  m_RoomHF: -1000
+  m_DecayTime: 10.05
+  m_DecayHFRatio: 0.23
+  m_ReflectionsLevel: -602
+  m_ReverbLevel: 198
+  m_ReverbDelay: 0.03
+  m_Diffusion: 100
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 250
+  m_ReflectionsDelay: 0
+  m_ReverbPreset: 11

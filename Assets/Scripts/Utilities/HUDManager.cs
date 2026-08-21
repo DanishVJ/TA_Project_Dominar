@@ -23,4 +23,13 @@ public class HUDManager : MonoBehaviour
             interactPromptText.gameObject.SetActive(!string.IsNullOrEmpty(prompt));
         }
     }
+    
+    public void DisplayTemporaryMessage(string message)
+    {
+        if (interactPromptText != null)
+        {
+            interactPromptText.text = message;
+            interactPromptText.gameObject.SetActive(true);
+        }
+    }
 }

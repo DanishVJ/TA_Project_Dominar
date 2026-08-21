@@ -60,11 +60,13 @@ public class GameStateManager : Singleton<GameStateManager>
         if (scene.name == "MainMenuScene")
         {
             SetState(GameState.MainMenu);
+            if (BGMManager.Instance != null) BGMManager.Instance.PlayMenuMusic();
             Debug.Log("loaded main");
         }
         else
         {
             SetState(GameState.Playing);
+            if (BGMManager.Instance != null) BGMManager.Instance.PlayGameplayMusic();
             Debug.Log("loaded playing");
         }
     }

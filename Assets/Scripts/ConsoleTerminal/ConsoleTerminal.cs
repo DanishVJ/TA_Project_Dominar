@@ -16,6 +16,7 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
     [Header("Audio Feedback")]
     [SerializeField] private AudioSource terminalAudioSource;
     [SerializeField] private AudioClip incorrectClip;
+    [SerializeField] private AudioClip successClip;
 
     [Header("Escape Terminal Settings")]
     [SerializeField] private bool isExitTerminal = false;
@@ -32,14 +33,29 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // Check if this is the exit terminal and if turrets are still active
+        // Check if this is the exit terminal
         if (isExitTerminal)
         {
             if (TurretManager.Instance != null && !TurretManager.Instance.AreAllTurretsDisabled())
             {
                 Debug.Log("[TERMINAL] Access Denied: Active turrets remain online.");
                 PlayIncorrectSound();
+                
+                HUDManager hud = FindObjectOfType<HUDManager>();
+                if (hud != null) hud.DisplayTemporaryMessage("Access Denied: Turrets Active!");
+
                 return; // Stop here, do not open hacking UI
+            }
+            else
+            {
+                // Turrets are defeated! Trigger escape sequence, play success sound, and show message.
+                PlaySuccessSound();
+
+                HUDManager hud = FindObjectOfType<HUDManager>();
+                if (hud != null) hud.DisplayTemporaryMessage("Airlocks Open!");
+
+                TriggerEscapeSequence();
+                return;
             }
         }
 
@@ -83,7 +99,17 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
     {
         if (terminalAudioSource != null && incorrectClip != null)
         {
-            terminalAudioSource.PlayOneShot(incorrectClip);
+            terminalAudioSource.clip = incorrectClip;
+            terminalAudioSource.Play();
+        }
+    }
+
+    public void PlaySuccessSound()
+    {
+        if (terminalAudioSource != null && successClip != null)
+        {
+            terminalAudioSource.clip = successClip;
+            terminalAudioSource.Play();
         }
     }
 

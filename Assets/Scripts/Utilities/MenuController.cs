@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MenuController : Singleton<MenuController>
 {
-    [SerializeField] private string gameSceneName = "SampleScene";
+    [SerializeField] private string gameSceneName = "GamePlayScene";
 
     public void PlayGame()
     {
