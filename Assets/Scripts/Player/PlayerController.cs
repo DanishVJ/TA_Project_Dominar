@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask interactableLayer;
 
     public event Action OnJumpEvent;
+    public static event Action<string> OnInteractableChanged;
     
     public Vector2 moveInput;
     private Vector3 _moveDirection;
@@ -88,7 +89,7 @@ public class PlayerController : MonoBehaviour
     private void CheckForInteractables()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, interactionCheckRadius, interactableLayer);
-        
+    
         IInteractable closestInteractable = null;
         float closestDistance = float.MaxValue;
 
@@ -105,10 +106,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Log only when the interaction target changes
+        // Update interaction target and fire the event when it changes
         if (_currentInteractable != closestInteractable)
         {
             _currentInteractable = closestInteractable;
+
+            string prompt = _currentInteractable != null ? _currentInteractable.GetInteractPrompt() : string.Empty;
+            OnInteractableChanged?.Invoke(prompt);
 
             if (_currentInteractable != null)
             {

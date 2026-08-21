@@ -19,6 +19,15 @@ public class TerminalHackingController : MonoBehaviour
     [SerializeField] private int winningLeftIndex = 2;
     [SerializeField] private int winningRightIndex = 5;
     
+    [Header("UI Slot Scaling")]
+    [SerializeField] private float activeScale = 1.15f;
+    [SerializeField] private float normalScale = 1.0f;
+    
+    [Header("Audio Feedback")]
+    [SerializeField] private AudioClip slotSwitchClip;
+    [SerializeField] private AudioClip spriteCycleClip;
+    [SerializeField] private AudioSource audioSource;
+    
     private TurretController targetTurret;
     private ConsoleTerminal activeTerminal;
 
@@ -53,6 +62,11 @@ public class TerminalHackingController : MonoBehaviour
             int totalSlots = 2; // Left and right slots
             
             activeSlot = (activeSlot + direction + totalSlots) % totalSlots;
+            
+            if (audioSource != null && slotSwitchClip != null)
+                audioSource.PlayOneShot(slotSwitchClip);
+            
+            UpdateUI(); // Updates the slot scaling immediately upon switching slots
         }
 
         // Vertical input (Up/Down or W/S) cycles sprites
@@ -84,6 +98,9 @@ public class TerminalHackingController : MonoBehaviour
             rightIndex = (rightIndex + direction + availableSprites.Count) % availableSprites.Count;
         }
 
+        if (audioSource != null && spriteCycleClip != null)
+            audioSource.PlayOneShot(spriteCycleClip);
+
         UpdateUI();
     }
 
@@ -93,6 +110,19 @@ public class TerminalHackingController : MonoBehaviour
         {
             if (leftSlotImage != null) leftSlotImage.sprite = availableSprites[leftIndex];
             if (rightSlotImage != null) rightSlotImage.sprite = availableSprites[rightIndex];
+        }
+        
+        // Pop the scale of the active slot
+        if (leftSlotImage != null)
+        {
+            float targetScale = (activeSlot == 0) ? activeScale : normalScale;
+            leftSlotImage.transform.localScale = new Vector3(targetScale, targetScale, 1f);
+        }
+    
+        if (rightSlotImage != null)
+        {
+            float targetScale = (activeSlot == 1) ? activeScale : normalScale;
+            rightSlotImage.transform.localScale = new Vector3(targetScale, targetScale, 1f);
         }
     }
 

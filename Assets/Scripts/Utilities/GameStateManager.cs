@@ -50,7 +50,7 @@ public class GameStateManager : Singleton<GameStateManager>
         _canvas = FindFirstObjectByType<Canvas>();
         
         mainMenuPanel = Instantiate(mainMenuPanel, _canvas.transform);
-        //gameplayHUDPanel = Instantiate(gameplayHUDPanel, _canvas.transform); // Fixed: Uncommented this!
+        gameplayHUDPanel = Instantiate(gameplayHUDPanel, _canvas.transform);
         pauseMenuPanel = Instantiate(pauseMenuPanel, _canvas.transform);
         winMenuPanel = Instantiate(winMenuPanel, _canvas.transform);
         gameOverPanel = Instantiate(gameOverPanel, _canvas.transform);
