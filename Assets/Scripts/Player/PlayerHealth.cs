@@ -11,6 +11,10 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameObject smokeParticlePrefab; // Drag your smoke prefab here in Inspector
     [SerializeField] private Transform smokeSpawnPoint;      // Where on the player the smoke appears (e.g., chest/spine)
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip hitSound;             // Drag your hit sound effect here
+    private AudioSource audioSource;
+
     // Events for UI and other systems
     public static event Action<float, float> OnHealthChanged; // Passes (currentHealth, maxHealth)
     public static event Action OnPlayerDied;
@@ -18,6 +22,14 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        
+        // Grab or add an AudioSource component automatically
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null && hitSound != null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
         // Broadcast initial health so the UI populates right away when the game starts
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
@@ -31,6 +43,9 @@ public class PlayerHealth : MonoBehaviour
         
         Debug.Log($"[PLAYER] Hit! Health remaining: {currentHealth}/{maxHealth}");
 
+        // Play the hit sound effect
+        PlayHitSound();
+
         // Spawn damage smoke effect
         TriggerDamageSmoke();
 
@@ -40,6 +55,14 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+        }
+    }
+
+    private void PlayHitSound()
+    {
+        if (hitSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(hitSound);
         }
     }
 

@@ -764,7 +764,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Welcome!
+  m_text: Welcome.. to your fate.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a5728d51990b9e4bb570a7bc62c9876, type: 2}
   m_sharedMaterial: {fileID: -2792507280258104947, guid: 9a5728d51990b9e4bb570a7bc62c9876, type: 2}

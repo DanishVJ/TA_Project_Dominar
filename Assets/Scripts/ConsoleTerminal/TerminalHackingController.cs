@@ -128,33 +128,18 @@ public class TerminalHackingController : MonoBehaviour
 
     private void CheckSolution()
     {
-        if (leftIndex == winningLeftIndex && rightIndex == winningRightIndex)
-        {
-            Debug.Log("Terminal Hacked Successfully!");
-        
-            if (targetTurret != null)
-            {
-                targetTurret.DisableTurret();
-            }
+        bool isSuccess = (leftIndex == winningLeftIndex && rightIndex == winningRightIndex);
 
-            // If this is the escape terminal, trigger the hangar door opening sequence
-            if (activeTerminal != null && activeTerminal.IsExitTerminal)
-            {
-                activeTerminal.TriggerEscapeSequence();
-            }
+        if (activeTerminal != null)
+        {
+            // Pass the solution result to the terminal to handle the HUD message, sounds, and delay
+            activeTerminal.HandleHackingResult(isSuccess, targetTurret);
         }
         else
         {
-            Debug.Log("Incorrect combination!");
-            
-            // Play the error sound directly from the physical terminal object in the world
-            if (activeTerminal != null)
-            {
-                activeTerminal.PlayIncorrectSound();
-            }
+            Debug.LogWarning("[HACKING] No active terminal reference found!");
+            CloseTerminal();
         }
-
-        CloseTerminal();
     }
 
     private void CloseTerminal()

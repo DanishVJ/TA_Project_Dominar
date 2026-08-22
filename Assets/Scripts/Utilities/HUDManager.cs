@@ -6,6 +6,7 @@ public class HUDManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI interactPromptText;
     private Coroutine hideMessageCoroutine;
+    private bool isTemporaryMessageActive = false; // Blocks raycasts completely until the timer ends
 
     private void OnEnable()
     {
@@ -21,11 +22,21 @@ public class HUDManager : MonoBehaviour
 
     private void UpdateInteractPrompt(string prompt)
     {
-        // If an interact prompt overrides, we can handle it or let it take priority
-        if (interactPromptText != null && string.IsNullOrEmpty(prompt) == false)
+        if (interactPromptText != null)
         {
-            interactPromptText.text = prompt;
-            interactPromptText.gameObject.SetActive(true);
+            // If a temporary message is currently showing, completely ignore standard prompts!
+            if (isTemporaryMessageActive) return;
+
+            if (!string.IsNullOrEmpty(prompt))
+            {
+                interactPromptText.text = prompt;
+                interactPromptText.gameObject.SetActive(true);
+            }
+            else
+            {
+                interactPromptText.text = string.Empty;
+                interactPromptText.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -34,18 +45,18 @@ public class HUDManager : MonoBehaviour
         DisplayTemporaryMessage("Now how to get outta here?", 5f);
     }
     
-    public void DisplayTemporaryMessage(string message, float duration = 5f)
+    public void DisplayTemporaryMessage(string message, float duration = 3f)
     {
         if (interactPromptText != null)
         {
-            interactPromptText.text = message;
-            interactPromptText.gameObject.SetActive(true);
-
-            // If a previous timer is running, stop it so they don't conflict
             if (hideMessageCoroutine != null)
             {
                 StopCoroutine(hideMessageCoroutine);
             }
+
+            isTemporaryMessageActive = true; // Lock out standard prompts immediately
+            interactPromptText.text = message;
+            interactPromptText.gameObject.SetActive(true);
 
             hideMessageCoroutine = StartCoroutine(HideMessageAfterDelay(duration));
         }
@@ -61,6 +72,7 @@ public class HUDManager : MonoBehaviour
             interactPromptText.gameObject.SetActive(false);
         }
 
+        isTemporaryMessageActive = false; // Allow standard prompts again
         hideMessageCoroutine = null;
     }
 }

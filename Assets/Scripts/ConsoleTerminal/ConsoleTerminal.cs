@@ -90,6 +90,57 @@ public class ConsoleTerminal : MonoBehaviour, IInteractable
         OnTerminalActivated?.Invoke();
     }
 
+    public void HandleHackingResult(bool success, TurretController targetTurret)
+    {
+        // 1. Close the hacking state first so the UI panel and game state reset
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetState(GameState.Playing);
+        }
+
+        // 2. Play audio and display the message right after closing
+        HUDManager hud = FindObjectOfType<HUDManager>();
+
+        if (success)
+        {
+            Debug.Log("Terminal Hacked Successfully!");
+        
+            if (targetTurret != null)
+            {
+                targetTurret.DisableTurret();
+            }
+
+            PlaySuccessSound();
+
+            if (hud != null)
+            {
+                // If this final hack disables all turrets, let the TurretManager handle the final prompt instead
+                bool allDisabled = TurretManager.Instance != null && TurretManager.Instance.AreAllTurretsDisabled();
+
+                if (!allDisabled)
+                {
+                    hud.DisplayTemporaryMessage("Turret Disabled!", 3f);
+                }
+            }
+
+            if (isExitTerminal)
+            {
+                TriggerEscapeSequence();
+            }
+        }
+        else
+        {
+            Debug.Log("Incorrect combination!");
+            
+            PlayIncorrectSound();
+
+            if (hud != null)
+            {
+                hud.DisplayTemporaryMessage("Incorrect", 3f);
+            }
+        }
+    }
+
     public string GetInteractPrompt()
     {
         return promptMessage;
